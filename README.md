@@ -9,3 +9,18 @@ This tool imports the text files and the raster into the file geodatabase with r
 The raster is imported and named MURASTER_10m_<State abbreviation>_<yyyy>.
 
 It then creates an open-soucre package structured like a SSURGO Download file with the text files in the tabular subdirectory and the raster as a GeoTIFF into the spatial subdirectory.
+
+A second tool, Validate RSS Datasets, is also included
+It validates RSS packages prior to uploading to Box
+
+This tool will walk through a top directory and check for:
+
+a properly formatted package (e.g. RSS_FL and RSS_FL.gdb)
+a suitably named MURASTER_10m__ (gdb and tif)
+metadata for tif as MURASTER_10m__.xml
+MURASTER_10m__ is unsigned 32 bit
+MURASTER_10m__ has NoData value 2147483647 (tif only, gdb raster does not have NoData value exposed)
+proper spatial reference (32161, 5070, 3338, 4326)
+required text files in open source package (no extraneous)
+required gdb tables (no extraneous)
+mukeys in raster (tif/gdb) match mukeys in text/gdb tables
