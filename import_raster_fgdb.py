@@ -12,10 +12,12 @@ Created on: 09/19/2024
     @organization: National Soil Survey Center, USDA-NRCS
     @email: alexander.stum@usda.gov
 
-@modified 09/19/2024
+@modified 09/19/2025
     @by: Alexnder Stum
-@version: 1.1
+@version: 1.2
 
+# --- version 1.2, Updated 09/18/2025 - Alexander Stum
+- Can handle if raster band already renamed
 # ---
 The orginal tool this is base off of is from the ArcMap Desktop toolbox
 ArcGIS Desktop Build RSS gdb: Import Raster to RSS db. This tool will 
@@ -403,7 +405,7 @@ def main(args: list[str, str, str, int, str]) ->str:
         The name of the imported raster if successful, empty string otherwise.
     """
     try:
-        v = '1.1'
+        v = '1.2'
         arcpy.AddMessage(f"\nImport Raster FGDB, {v = !s}")
 
         out_p = args[0]
@@ -510,7 +512,8 @@ def main(args: list[str, str, str, int, str]) ->str:
         # Rename Band_1, for some reason this doesn't display for rasters
         # fgdb, yet when you export them the band name shows up. 
         rast = arcpy.Raster(out_r)
-        rast.renameBand('Band_1', 'MUKEY')
+        if 'MUKEY' not in rast.bandNames:
+            rast.renameBand('Band_1', 'MUKEY')
         del rast
 
         meta_b = UpdateMetadata(out_p, out_r, "10m", module_p, v, st)
