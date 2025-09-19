@@ -11,8 +11,12 @@ Created on Wed Sep  7 08:43:35 2022
     @email: alexander.stum@usda.gov
 @modified 6/18/2025
     @by: Alexnder Stum
-@version: 1.1
+@version: 1.2
 
+# ---
+version 1.2, Updated 09/18/2025 - Alexander Stum
+- Can handle if raster band already renamed
+- Added multiband check
 # ---
 version 1.1, Updated 06/18/2025 - Alexander Stum
 - Cleaned up code formatting
@@ -509,7 +513,19 @@ def insstatedir(dire: str, logf: TextIO) -> bool:
 
                 # Raster band info
                 # Band pixel data type
-                esriband = os.path.join(esriraster, 'Band_1')
+                # Get band name
+                rast = arcpy.Raster(esriraster)
+                bands = rast.bandNames
+                if len(bands) > 1:
+                    msg15_5 = (f"{fail}gdb raster is multiband "
+                               f"and has {len(bands)} bands")
+                    logf.write('\tESRI GDB: ' + msg15_5)
+                    del rast
+                    raise
+                band = bands[0]
+                del rast
+
+                esriband = os.path.join(esriraster, band)
                 esriDepth = arcpy.Describe(esriband).pixelType
                 if esriDepth == 'U32':
                     msg16 = (
@@ -607,7 +623,7 @@ def main(args: list[str, str, int]) -> str:
     with the underscore if unsuccessful <ST_>
     """
     try:
-        v = '1.1'
+        v = '1.2'
         rss_dir = args[0]
         st = args[1]
         i = args[2]
