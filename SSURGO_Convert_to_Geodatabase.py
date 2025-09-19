@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-One of three scripts called by the Create gSSURGO File Geodatabase tool
+One of three scripts called by the Create RSS Datasets tool
 from the RSS SSURGO Export Tool arctoolbox
 This tool creates file geodatabse RSS database.
 Created on: 09/19/2024
@@ -38,8 +38,6 @@ import sys
 import time
 import traceback
 import xml.etree.cElementTree as ET
-from importlib import reload
-from urllib.request import urlopen
 from typing import Any, Callable, TypeVar
 
 import arcpy
@@ -47,24 +45,6 @@ from arcpy import env
 
 Tist = TypeVar("Tist", tuple, list)
 
-states = {
-    'AK': 'Alaska', 'AL': 'Alabama', 'AR': 'Arkansas', 'AS': 'American Samoa',
-    'AZ': 'Arizona', 'CA': 'California', 'CO': 'Colorado', 'CT': 'Connecticut',
-    'DC': 'District of Columbia', 'DE': 'Delaware', 'FL': 'Florida',
-    'GA': 'Georgia', 'GU': 'Guam', 'HI': 'Hawaii', 'IA': 'Iowa', 'ID': 'Idaho',
-    'IL': 'Illinois', 'IN': 'Indiana', 'KS': 'Kansas', 'KY': 'Kentucky',
-    'LA': 'Louisiana', 'MA': 'Massachusetts', 'MD': 'Maryland', 'ME': 'Maine',
-    'MI': 'Michigan', 'MN': 'Minnesota', 'MO': 'Missouri', 'MS': 'Mississippi',
-    'MT': 'Montana', 'NC': 'North Carolina', 'ND': 'North Dakota',
-    'NE': 'Nebraska', 'NH': 'New Hampshire', 'NJ': 'New Jersey',
-    'NM': 'New Mexico', 'NV': 'Nevada', 'NY': 'New York', 'OH': 'Ohio',
-    'OK': 'Oklahoma', 'OR': 'Oregon', 'PA': 'Pennsylvania',
-    'PRUSVI': "Puerto Rico and U.S. Virgin Islands", 'RI': 'Rhode Island',
-    'SC': 'South Carolina', 'SD': 'South Dakota', 'TN': 'Tennessee',
-    'TX': 'Texas', 'UT': 'Utah', 'VA': 'Virginia', 'VT': 'Vermont',
-    'WA': 'Washington', 'WI': 'Wisconsin', 'WV': 'West Virginia',
-    'WY': 'Wyoming'
-}
 
 class xml:
     def __init__(self, aoi: str, path: str, gssurgo_v: str):
@@ -446,15 +426,16 @@ def importSet(
             if not os.path.exists(txt_p):
                 return f"{txt_p} does not exist"
             csvReader = csv.reader(
-                open(txt_p, 'r', encoding='utf8'), 
+                open(txt_p, 'r'), #encoding="utf-8"
                 delimiter = '|', 
                 quotechar = '"'
             )
             for row in csvReader:
+                iCur.insertRow(tuple(v or None for v in row))
                 # replace empty sets with None
-                row_s.add(tuple(v or None for v in row))
-            for row in row_s:
-                iCur.insertRow(row)
+            #     row_s.add(tuple(v or None for v in row))
+            # for row in row_s:
+                # iCur.insertRow(row)
         del iCur
         return ''
 
@@ -466,8 +447,12 @@ def importSet(
         func = sys._getframe().f_code.co_name
         return arcpy.AddError(arcpyErr(func))
     except:
+        flds = iCur.fields
+        arcpy.AddError(f"In table2: {table}: {flds}")
+        
+        for i, col in enumerate(row):
+            arcpy.AddMessage(f"\n{flds[i]}: {len(col)}\n\t{col}")
         try:
-            arcpy.AddMessage(table)
             # arcpy.AddMessage(cols)
             # arcpy.AddMessage(txt)
             # for i, e in enumerate(row):
