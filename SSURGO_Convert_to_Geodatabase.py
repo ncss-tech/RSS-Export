@@ -12,9 +12,9 @@ Created on: 09/19/2024
     @organization: National Soil Survey Center, USDA-NRCS
     @email: alexander.stum@usda.gov
 
-@modified 09/19/2024
+@modified 09/19/2025
     @by: Alexnder Stum
-@version: 1.1
+@version: 1.2
 
 # ---
 The orginal tool this is based off of is from the ArcMap Desktop toolbox
@@ -1600,7 +1600,7 @@ def main(args: list[str, str, str, int, str, str])-> str:
     """
     # %% m
     try:
-        v = '0.1'
+        v = '1.2'
         arcpy.AddMessage("Creating RSS SSURGO File GDB, version: " + v)
         # location of SSURGO datasets containing SSURGO downloads
         input_p = args[0] # 0: input folder
