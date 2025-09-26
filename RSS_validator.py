@@ -9,14 +9,13 @@ Created on Wed Sep  7 08:43:35 2022
     @title:  GIS Specialist & Soil Scientist
     @organization: National Soil Survey Center, USDA-NRCS
     @email: alexander.stum@usda.gov
-@modified 6/18/2025
+@modified 9/26/2025
     @by: Alexnder Stum
-@version: 1.2
+@version: 1.2.1
 
 # ---
-version 1.2, Updated 09/18/2025 - Alexander Stum
-- Can handle if raster band already renamed
-- Added multiband check
+version 1.2.1, Updated 9/26/2025 - Alexander Stum
+- Messaging about missing or extraneous messages was swapped
 # ---
 version 1.1, Updated 06/18/2025 - Alexander Stum
 - Cleaned up code formatting
@@ -413,8 +412,8 @@ def insstatedir(dire: str, logf: TextIO) -> bool:
                             errored = True
                     # Identify mismatch in text files
                     else:
-                        miss_txt = ostables - textTables
-                        extra_txt = textTables - ostables
+                        extra_txt = ostables - textTables
+                        miss_txt = textTables - ostables
                         msg6 = (
                             f"{fail}{os.path.basename(osp)} is missing or "
                             "has extraneous txt tables\n"
