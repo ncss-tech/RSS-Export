@@ -13,16 +13,22 @@ Created on: 09/19/2024
     @organization: National Soil Survey Center, USDA-NRCS
     @email: alexander.stum@usda.gov
 
-@modified 09/19/2024
+@modified Update 9/26/2025
     @by: Alexnder Stum
-@version: 1.1
+@version: 1.2.1
+
+# --- Update 10/16/24 v 1.2.1
+- Checks files found to tabs_req variable and messages out names of 
+    extraneous files
+# --- Update 10/16/24 v 1.2
+- Add README to text file list
 
 # ---
-The orginal tool this is base off of is from the ArcMap Desktop toolbox
-ArcGIS Desktop Build RSS gdb: Open Source Export. The tool creates
-SSURGO Download structured directory package. It copies the contents of
-tabular folder and creates a spatial sub directory and exports the raster
-in the RSS database as geoTIFF.
+- The orginal tool this is base off of is from the ArcMap Desktop toolbox
+    ArcGIS Desktop Build RSS gdb: Open Source Export. The tool creates
+    SSURGO Download structured directory package. It copies the contents of
+    tabular folder and creates a spatial sub directory and exports the raster
+    in the RSS database as geoTIFF.
 
 Numpy Dostring format
 
@@ -109,7 +115,7 @@ def main(args: list[str, str, str, int, str]) ->str:
         directory. Otherwise returns an empty string.
     """
     try:
-        v = '1.1'
+        v = '1.2'
         arcpy.AddMessage(f"\nExport Package, {v = !s}")
         gdb_p = args[0] # input RSS gdb
         input_p = args[1] # input tablular folder
@@ -153,14 +159,18 @@ def main(args: list[str, str, str, int, str]) ->str:
             'mstabcol.txt', 'muaggatt.txt', 'muareao.txt', 'mucrpyd.txt',
             'mutext.txt', 'sacatlog.txt', 'sainterp.txt', 'sdvalgorithm.txt',
             'sdvattribute.txt', 'sdvfolder.txt', 'sdvfolderattribute.txt',
-            'version.txt'
+            'version.txt', 'README.txt'
         ]
 
-        in_contents = os.listdir(input_p)
         for f in os.scandir(input_p):
-            if f.is_file() and f.name in in_contents:
+            if f.is_file() and f.name in tabs_req:
                 shutil.copy(f.path, f"{tab_out}/{f.name}")
                 tabs_req.remove(f.name)
+            elif f.is_file():
+                arcpy.AddWarning(
+                    f"\tAn unexpected file found in {input_p}: {f.name}"
+                )
+            
         if tabs_req:
             arcpy.AddWarning(
                 f"\tThe following text files were not copied over to {tab_out}:"
