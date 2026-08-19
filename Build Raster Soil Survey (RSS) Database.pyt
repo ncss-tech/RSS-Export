@@ -13,10 +13,15 @@ Created on: 09/19/2024
     @organization: National Soil Survey Center, USDA-NRCS
     @email: alexander.stum@usda.gov
 
-@modified 6/17/2025
+@modified 8/17/2025
     @by: Alexnder Stum
-@version: 1.2
+@version: 2.0
 
+# ---
+- Modified to accomodate the inlcusion of PARASTER and SARASTER
+- User now specifies whether it is the first year of publication
+- If not 1st year, parameter for previous year's database so that metadata is
+ported over
 # ---
 version 1.2, Updated 6/17/2025 - Alexander Stum
 1) Added validator scirpt execution
@@ -70,7 +75,7 @@ class buildFGDB(object):
         """Define parameter definitions"""
         # parameter 0
         params = [arcpy.Parameter(
-            displayName="Tabular Folder of Exported SSURGO Textfiles",
+            displayName="Tabular Folder of Exported SSURGO Text files",
             name="inputFolder",
             direction="Input",
             parameterType="Required",
@@ -79,24 +84,14 @@ class buildFGDB(object):
 
         # parameter 1
         params.append(arcpy.Parameter(
-            displayName="Input Raster",
-            name="raster_p",
-            direction="Input",
-            parameterType="Required",
-            datatype="DERasterDataset"
-        ))
-
-        # parameter 2
-        params.append(arcpy.Parameter(
             displayName="Output Folder",
             name="out_p",
             direction="Input",
             parameterType="Required",
-            datatype="DEFolder",
-            enabled=True
+            datatype="DEFolder"
         ))
 
-        # parameter 3
+        # parameter 2
         params.append(arcpy.Parameter(
             displayName="Select State",
             name="state",
@@ -107,28 +102,70 @@ class buildFGDB(object):
         params[-1].filter.type = "ValueList"
         params[-1].filter.list = self.states
 
-        # parameter 4
+        # parameter 3
         params.append(arcpy.Parameter(
             displayName="Fiscal Year of Publication",
             name="fy",
             direction="Input",
             parameterType="Required",
-            datatype="GPLong",
-            enabled=True
+            datatype="GPLong"
         ))
         params[-1].value = datetime.now().year + 1
 
+        # parameter 4
+        params.append(arcpy.Parameter(
+            displayName="First year of publication?",
+            name="pub1st",
+            direction="Input",
+            parameterType="Required",
+            datatype="GPBoolean"
+        ))
+        params[-1].value = False
+
         # parameter 5
         params.append(arcpy.Parameter(
-            displayName="gSSURGO Version",
-            name="gSSURGO_v",
+            displayName="Last FY's RSS FGDB",
+            name="rss_db",
             direction="Input",
             parameterType="Optional",
-            datatype="String",
-            enabled=False
+            datatype="DEWorkspace"
         ))
-        params[-1].filter.type = "ValueList"
-        params[-1].filter.list = ["gSSURGO traditional", "gSSURGO 2.0"]
+        params[-1].filter.list = ["Local Database"]
+
+        # parameter 6
+        params.append(arcpy.Parameter(
+            displayName="Updates to MURASTER (as .tif)",
+            name="muraster",
+            direction="Input",
+            parameterType="Optional",
+            datatype="DERasterDataset",
+            category='Rasters',
+            enabled=True,
+            multiValue=True
+        ))
+
+        # parameter 7
+        params.append(arcpy.Parameter(
+            displayName="Updates to PARASTER (as .tif)",
+            name="paraster",
+            direction="Input",
+            parameterType="Optional",
+            datatype="DERasterDataset",
+            category='Rasters',
+            enabled=True,
+            multiValue=True
+        ))
+
+        # parameter 8
+        params.append(arcpy.Parameter(
+            displayName="Updates to SARASTER (provided by NSSC)",
+            name="saraster",
+            direction="Input",
+            parameterType="Optional",
+            datatype="DERasterDataset",
+            category='Rasters',
+            enabled=True
+        ))
 
         return params
 
@@ -137,86 +174,171 @@ class buildFGDB(object):
         validation is performed.  This method is called whenever a parameter
         has been changed."""
 
+        # if First year pub, disable RSS Database
+        if params[4].value == True:
+            params[5].enabled = False
+        else:
+            params[5].enabled = True
+
+        params[6].enabled = True
+
         return
 
     def updateMessages(self, params):
         """Modify the messages created by internal validation for each tool
         parameter.  This method is called after internal validation."""
-        for i in range(6):
+        for i in range(9):
             params[i].clearMessage()
 
-        # Raster must have an mukey field
-        if params[1].value:
-            rast_d = arcpy.Describe(params[1].value)
-            rast_f = {
-                f.name for f in rast_d.fields if f.name.lower() == "mukey"
-            }
-            if not rast_f:
-                params[1].setErrorMessage(
-                    f"{rast_d.name} does not have an mukey field"
+        # MURASTER must have an mukey field
+        if params[6].value:
+            rasts = params[6].valueAsText.split(';')
+            for rast in rasts:
+                if rast[-4:] != '.tif':
+                    params[6].setErrorMessage(f'{rast_d.name} is not a GeoTIFF')
+                rast_d = arcpy.Describe(rast)
+                rast_f = {
+                    f.name for f in rast_d.fields if f.name.lower() == "mukey"
+                }
+                if not rast_f:
+                    params[6].setWarningMessage(
+                        f"{rast_d.name} does not have an mukey field"
+                    )
+        # PARASTER must have required fields
+        if params[7].value:
+            req_flds = {'UPROJID', 'SPATIALVER', 'AREATYPE'}
+            rasts = params[7].valueAsText.split(';')
+            for rast in rasts:
+                if rast[-4:] != '.tif':
+                    params[7].setErrorMessage(f'{rast_d.name} is not a GeoTIFF')
+                rast_d = arcpy.Describe(rast)
+                rast_f = {f.name for f in rast_d.fields if f.name in req_flds}
+                if rast_f != req_flds:
+                    params[7].setWarningMessage(
+                        f"{rast_d.name} does not have "
+                        f"{req_flds - rast_f} fields"
+                    )
+        # SARASTER must have required fields
+        if params[8].value:
+            req_flds = {'AREASYMBOL', 'SPATIALVER', 'AREATYPE'}
+            rast_d = arcpy.Describe(params[8].value)
+            rast_f = {f.name for f in rast_d.fields if f.name in req_flds}
+            if rast_f != req_flds:
+                params[8].setWarningMessage(
+                    f"{rast_d.name} does not have {req_flds - rast_f} fields"
                 )
 
         # Year must be + or - 1 year from current year
         cy = datetime.now().year
-        if (fy := params[4].value):
+        if (fy := params[3].value):
             cyi = cy - 1
             cyf = cy + 1
             if (fy < cyi) or (fy > cyf):
-                params[4].setErrorMessage(
+                params[3].setErrorMessage(
                     f"Fiscal year is not range ({cyi} - {cyf})"
                 )
-            
+        # first year publication require all three rasters
+        if params[4].value == True and not params[6].value:
+            params[6].setErrorMessage(
+                'All three rasters must be provided '
+                'the first year of publication'
+            )
+        if params[4].value == True and not params[7].value:
+            params[7].setErrorMessage(
+                'All three rasters must be provided '
+                'the first year of publication'
+            )
+        if params[4].value == True and not params[8].value:
+            params[8].setErrorMessage(
+                'All three rasters must be provided '
+                'the first year of publication'
+            )
+
+        # else make sure selected State abbreviaion in name of RSS db
+        if params[4].value == False and params[2].value and params[5].value:
+            st = params[2].valueAsText
+            gdb = os.path.basename(params[5].valueAsText)
+            if st not in gdb:
+                params[2].setWarningMessage(
+                    "RSS Database and selected state don't algin"
+                )
+                params[5].setWarningMessage(
+                    "RSS Database and selected state don't algin"
+                )
+        
         return
 
     def execute(self, params, messages):
         """The source code of the tool."""
         import SSURGO_Convert_to_Geodatabase
         reload(SSURGO_Convert_to_Geodatabase)
-        rast_d = arcpy.Describe(params[1].value)
+
+        # Build gSSURGO templated FGDB
+        if not params[4].value:
+            prev_fgdb = params[5].valueAsText
+        else:
+            prev_fgdb = ''
         gdb_p = SSURGO_Convert_to_Geodatabase.main([
             params[0].valueAsText, # 0: input folder
-            params[2].valueAsText, # output path
-            params[3].value, # State
-            params[4].value, # fiscal year
-            '1.0', # gSSURGO template version
-            # 14: module path
+            params[1].valueAsText, # output path
+            params[2].value, # State
+            params[3].value, # fiscal year
+            prev_fgdb, # previous year's fgdb
+            # 5: module path
             os.path.dirname(SSURGO_Convert_to_Geodatabase.__file__) 
         ])
+
+        # import rasters
         if gdb_p:
-            # import raster
             import import_raster_fgdb
             reload(import_raster_fgdb)
+            if params[6].value:
+                murasts = params[6].valueAsText.split(';')
+            else:
+                murasts = []
+            if params[7].value:
+                parasts = params[7].valueAsText.split(';')
+            else:
+                parasts = []
+            if params[8].value:
+                sarast = [params[8].valueAsText]
+            else:
+                sarast = []
+
             rast_n = import_raster_fgdb.main([
-                gdb_p, # newly created RSS fgdb
-                rast_d.catalogPath, # raster path
-                params[3].value, # State
-                params[4].value, # fiscal year
-                # 14: module path
+                gdb_p, # New FGDB path
+                params[2].value, # State
+                params[3].value, # fiscal year
+                prev_fgdb, # previous year's fgdb
+                murasts, # updates to MURASTER to be appended
+                parasts, # updates to PARASTER to be appended
+                sarast, # updated version of SARASTER
+                # 7: module path
                 os.path.dirname(SSURGO_Convert_to_Geodatabase.__file__) 
             ])
         else:
-            arcpy.AddError(f"{gdb_p} was not successfully created")
+            arcpy.AddError(f"FGDB {gdb_p} was not successfully created")
+            return
         if rast_n:
             arcpy.AddMessage(
                 f"\n{gdb_p} and {rast_n} were successfully created"
             )
             # export package
             import export_package
-            reload(export_package)
+            # reload(export_package)
             export_p = export_package.main([
                 gdb_p, # newly created RSS fgdb
                 params[0].valueAsText, # input folder
-                params[3].value, # State
-                params[4].value, # fiscal year
-                rast_n # MURASTER name
+                params[2].value, # State
             ])
-
             if export_p:
                 arcpy.AddMessage(f"Package successfully exported to {export_p}")
             else:
-                arcpy.AddError(f"Package unsuccessfully exported to {export_p}")
+                arcpy.AddError(f"Failed to export Open Source package")
         else:
-            arcpy.AddError(f"{rast_n} was not successfully created")
+            arcpy.AddError(f"Error exporting rasters")
+        # exit()
+        arcpy.ResetProgressor()
             
         return
 
@@ -251,7 +373,6 @@ class validator(object):
             direction="Input",
             parameterType="Required",
             datatype="DEFolder",
-            enabled=True,
             multiValue=True
         )]
         return params

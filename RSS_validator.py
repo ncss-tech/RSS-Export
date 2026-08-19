@@ -9,10 +9,17 @@ Created on Wed Sep  7 08:43:35 2022
     @title:  GIS Specialist & Soil Scientist
     @organization: National Soil Survey Center, USDA-NRCS
     @email: alexander.stum@usda.gov
-@modified 9/26/2025
+@modified 7/20/2026
     @by: Alexnder Stum
-@version: 1.2.1
+@version: 2.0
 
+# --- 
+version 2.0, Updated 7/20/2026 - Alexander Stum
+- Apply checks to SARASTER as are applied to MURASTER
+- Compare to LAO table
+- Check that MURASTER and PARASTER perfectly overlap
+- Check that MURASTER and PARASTER are within SARASTER
+- accept 0 as nodata value
 # ---
 version 1.2.1, Updated 9/26/2025 - Alexander Stum
 - Messaging about missing or extraneous messages was swapped
@@ -37,6 +44,7 @@ Updated 09/19/2024 - Alexander Stum
 - Added error messaging funcions to handle exceptions
 
 """
+v = '2.0'
 
 import os
 import sys
@@ -48,7 +56,7 @@ import arcpy
 import pandas as pd
 
 
-def pyErr(func: str = None) -> str:
+def pyErr(func: str = '') -> str:
     """When a python exception is raised, this funciton 
     formats the traceback message.
 
@@ -100,13 +108,13 @@ def arcpyErr(func: str) -> str:
         return "Error in arcpyErr method"
     
 
-def insstatedir(dire: str, logf: TextIO) -> bool:
+def insstatedir(base_p: str, logf: TextIO) -> bool:
     """Function performs all the validation checks on the RSS package
     and writes out result to log file.
 
     Parameters
     ----------
-    dire : str
+    base_p : str
         RSS package directory with the SSURGO open source package and FGDB
     logf : TextIO
         The log file where validation results are written
@@ -170,7 +178,7 @@ def insstatedir(dire: str, logf: TextIO) -> bool:
             'sdvfolder', 'sdvfolderattribute', 'version'
         }
 
-        txtColNames = [
+        mu_cols = [
             'musym', 'muname', 'mukind', 'mustatus', 'muacres', 'mapunitlfw_l',
             'mapunitlfw_r', 'mapunitlfw_h', 'mapunitpfa_l', 'mapunitpfa_r',
             'mapunitpfa_h', 'farmlndcl', 'muhelcl', 'muwathelcl', 'muwndhelcl',
@@ -178,48 +186,76 @@ def insstatedir(dire: str, logf: TextIO) -> bool:
             'nhspiagr', 'vtsepticsyscl', 'mucertstat', 'lkey', 'mukey'
         ]
 
-        state = os.path.basename(dire)
-        if state in states:
-            # arcpy.AddMessage(f"in {state=}")
-            msg2 = '\nValidataing RSS package for ' + state
-            logf.write(msg2 + '\n')
-            osp = f"{dire}/RSS_{state}"
+        lao_cols = [
+            'areatypename', 'areasymbol', 'areaname', 'areaovacres', 'lkey',
+            'lareaovkey'
+        ]
 
+        l_cols = [
+            'areatypename', 'areasymbol', 'areaname', 'areaacres', 'mlraoffice',
+            'legenddesc', 'ssastatus', 'mouagncyresp', 'projectscale', 
+            'cordate', 'ssurgoarchived', 'legendsuituse', 'legendcertstat', 
+            'lkey'
+        ]
+
+        state = os.path.basename(base_p)
+        fgdb = f"{base_p}/RSS_{state}.gdb"
+
+        # Get State, FY from Version table
+        with arcpy.da.SearchCursor(
+            fgdb + '/version', 'name', where_clause="type = 'Edition'"
+        ) as sCur:
+            rss_ed = sCur.next()[0]
+        st = rss_ed[:2]
+        fy = rss_ed[3:]
+
+        if state in states:
+            arcpy.AddMessage(f"in {state=}")
+            msg2 = '\nValidataing RSS package for ' + state
+            if state != st:
+                msg2 += ('\n\t\tDiscrepancy between database name '
+                'and version table')
+
+            logf.write(msg2)
+            osrc_p = f"{base_p}/RSS_{state}"
             # Check for two major components: 
             #   1) The open source SSURGO directory
             #   2) File Geodatabase
             #   3) README.txt
-            direchk = {'RSS_' + state,  'RSS_' + state + '.gdb', 'README.txt'}
-            req = {'RSS_' + state,  'RSS_' + state + '.gdb'}
-            contents = {f for f in os.listdir(dire) if '.zip' not in f}
-            arcpy.AddMessage(contents)
+            direchk = {'RSS_' + state,  f"RSS_{state}.gdb", 'README.txt'}
+            req = {'RSS_' + state,  f"RSS_{state}.gdb"}
+            contents = {f for f in os.listdir(base_p) if '.zip' not in f}
             if not contents == direchk:
                 if contents == req:
                     msg2b = (
-                        f"\t{success} Top level state folder {state} is valid"
+                        f"\n\t{success} Top level state folder {state} "
+                        "is valid"
                     )
-                    logf.write(msg2b + '\n')
-                    arcpy.AddWarning("Missing README.txt from state directory")
+                    logf.write(msg2b)
+                #     arcpy.AddWarning("" \
+                #     "\tMissing README.txt from state directory"
+                # )
                 else:
                     msg2b = (
-                        f"\t{fail} Top level state {state} is missing the open "
-                        "source package, the FGDB, or has extraneous files"
+                        f"\n\t{fail} Top level state {state} is missing the "
+                        "open source package, the FGDB, or has extraneous files"
                     )
-                    logf.write(msg2b + '\n')
+                    logf.write(msg2b)
                     errored = True
                     return errored
             else:
-                msg2b = f"\t{success} Top level state folder {state} is valid"
-                logf.write(msg2b + '\n')
-            
+                msg2b = f"\n\t\t{success} Top level directory: NOMINAL"
+                logf.write(msg2b)
+
             # Check contents of open source SSURGO directory
-            if not os.path.isdir(osp):
-                msg3 = fail + 'open source SSURGO package not located\n'
-                logf.write('\tOpen Source Package: ' + msg3)
+            msg3 = ''
+            if not os.path.isdir(osrc_p):
+                msg3 = fail + f'\n\t\tMissing the open source director {osrc_p}'
+                logf.write('\n\tOpen Source Package: ' + msg3)
                 errored = True
                 return errored
             else:
-                osd = os.listdir(osp)
+                osd = os.listdir(osrc_p)
                 osdreq = ['spatial', 'tabular']
                 # Check presence of 
                 #   1) spatial directory
@@ -227,381 +263,585 @@ def insstatedir(dire: str, logf: TextIO) -> bool:
                 if osd != osdreq:
                     msg3 = (
                         f"{fail} structure of open source SSURGO package "
-                        "inconsistent. Missing spatial and/or tabular directory "
-                        "or an extra file and/or directory was found\n"
+                        "inconsistent. Missing spatial and/or tabular directory"
+                        " or an extra file and/or directory was found\n"
                     )
                     logf.write('\tOpen Source Package: ' + msg3)
                     errored = True
+                    arcpy.AddError('--Validation incomplete--\n' + msg3)
+                    return errored
                 else:
-                    osdspatial = os.path.join(dire, osp, 'spatial')
-                    osdtabular = os.path.join(dire, osp, 'tabular')
-
+                    # Naming Conventions
+                    osrc_spatial = osrc_p + "/spatial"
+                    osrc_tabular = osrc_p + "/tabular"
                     # Check for raster in spatial directory
-                    osrfiles = os.listdir(osdspatial)
-                    osraster = [f for f in osrfiles if f.endswith('.tif')]
-                    if not osraster:
-                        msg3 = "A MURASTER_10m .tif file not found"
-                        logf.write('\tOpen Source Package: ' + msg3)
-                        errored = True
-                    # More than one tif file found
-                    elif len(osraster) != 1:
-                        msg3 = (
-                            f"{fail} unable to pinpoint the .tif MURASTER_10m."
-                            f"Rasters found {osraster}"
-                        )
-                        logf.write('\tOpen Source Package: ' + msg3)
-                        errored = True
-                    # Does is start with standard name trunk
-                    elif not osraster[0].startswith('MURASTER_10m'):
-                        msg3 = fail + 'unable to locate the MURASTER_10m\n'
-                        logf.write('\tOpen Source Package: ' + msg3)
-                        errored = True
-                    # needs three '_' to distinguish:
-                    # prefix, resolution, state, year
-                    elif osraster[0].count("_") != 3:
-                        msg3 = (
-                            f"{fail}Raster is not named correctly"
-                            f" MURASTER_10m_{state}_<FY>.tif\n"
-                        )
-                        logf.write('\tOpen Source Package: ' + msg3)
-                        errored = True
-                    # Look for FY: yyyy
-                    cy = datetime.now().year
-                    cyi = cy - 1
-                    cyf = cy + 1
-                    try:
+                    arcpy.env.workspace = osrc_spatial
+                        # MURASTER
+                    mu_rast = f'MURASTER_10m_{st}_{fy}.tif'
+                    if not arcpy.ListRasters(mu_rast):
+                        msg3 += f'\n\t\t\tMissing {mu_rast} in {osrc_spatial}'
+                        # PARASTER
+                    pa_rast = f'PARASTER_10m_{st}_{fy}.tif'
+                    if not arcpy.ListRasters(pa_rast):
+                        msg3 += f'\n\t\t\tMissing {pa_rast} in {osrc_spatial}'
+                        # SARASTER
+                    sa_rast = f'SARASTER_10m_{st}_{fy}.tif'
+                    if not arcpy.ListRasters(sa_rast):
+                        msg3 += f'\n\t\t\tMissing {sa_rast} in {osrc_spatial}'
 
-                        fy = int(osraster[0][-8:-4])
-                        if (fy > cyi) or (fy < cyf):
-                            msg3 = (
-                                f"{success}located properly named tif "
-                                f"raster {osraster[0]}\n"
-                            )
-                            logf.write('\tOpen Source Package: ' + msg3)
-                        else:
-                            msg3 = (f"{fail}unable validate Fiscal Year {fy} "
-                                    f"for {osraster[0]}\n"
-                            )
-                            logf.write('\tOpen Source Package: ' + msg3)
-                            errored = True
-                    except:
-                        msg3 = (f"{fail}unable validate date stamp {fy}"
-                                f"for {osraster[0]}\n"
-                            )
-                        logf.write('\tOpen Source Package: ' + msg3)
+                    stem = "Raster Naming Convetion:" 
+                    if msg3:
+                        msg3 = '\n\tOpen Source Package: ' \
+                            f'\n\t\t{stem:<{25}}FAILED' + msg3
                         errored = True
+                    else:
+                        msg3 = '\n\tOpen Source Package: ' \
+                            f'\n\t\t{stem:<{25}}NOMINAL' + msg3
+                    logf.write(msg3)
                     
                     # Raster metadata
-                    meta = [f for f in osrfiles 
-                            if f.endswith('.tif.xml')]
-                    if len(meta) == 0:
-                        msg4 = f"{fail}unable to locate a xml metadata file\n"
-                        logf.write('\tOpen Source Package: ' + msg4)
+                    msg3b = ''
+                    sp_files = os.listdir(osrc_spatial)
+
+                    if mu_rast + '.xml' not in sp_files:
+                        msg3b = f'\n\t\t\tMissing metadata file for {mu_rast}'
+                    if pa_rast + '.xml' not in sp_files:
+                        msg3b += f'\n\t\t\tMissing metadata file for {pa_rast}'
+                    if sa_rast + '.xml' not in sp_files:
+                        msg3b += f'\n\t\t\tMissing metadata file for {sa_rast}'
+                    stem = 'Metadata: '
+                    if msg3b:
+                        msg3b = f'\n\t\t{stem:<{25}}FAILED' + msg3b
                         errored = True
                     else:
-                        msg4 = f"{success}found a .tif.xml metadata file\n"
-                        logf.write('\tOpen Source Package: ' + msg4)
+                        msg3b = f'\n\t\t{stem:<{25}}NOMINAL'
+                    logf.write(msg3b)
 
                     # Raster spatial reference
-                    path = os.path.join(dire, osdspatial, osraster[0])
-                    print(path)
-                    desc = arcpy.Describe(path)
-                    sr = desc.spatialReference
-                    if sr.PCSCode != 0:
-                        if sr.PCSCode not in [5070, 3338, 32161]:
-                            msg5 = (
-                                f"{fail} tif raster has unknown or "
-                                "unsupported spatial reference\n"
-                            )
-                            logf.write('\tOpen Source Package: ' + msg5)
-                            errored = True
-                        else:
-                            msg5 = (f"{success}{osraster[0]} has valid "
-                                    "spatial reference\n"
-                            )
-                            logf.write('\tOpen Source Package: ' + msg5)
-                    elif not sr.name == 'Hawaii_Albers_Equal_Area_Conic':
-                        msg5 = (
-                            f"{fail}{osraster[0]} has unknown or "
-                            f"unsupported spatial reference: {sr.name}\n"
+                    # will need to be updated once RSS are 
+                    # published beyond CONUS
+                    msg4 = '' # Spatial Reference
+                    msg5 = '' # band count
+                    msg5a = '' # data type
+                    msg5b = '' # no data value
+                    msg5c = '' # Band name
+  
+                    rast_d = arcpy.Describe(f"{osrc_spatial}/{mu_rast}")
+                    sr = rast_d.spatialReference
+                    if sr.PCSCode != 5070:
+                        msg4 += (
+                            f"\n\t\t\t{mu_rast} has incorrect coordinate system"
                         )
-                        logf.write('\tOpen Source Package: ' + msg5)
-                        errored = True
-                    else:
-                        msg5 = (
-                            f"{success}{osraster[0]} has valid spatial "
-                            f"reference: {sr.name}\n"
+                    band_d = rast_d.children
+                    if len(band_d) != 1:
+                        msg5 += f"\n\t\t\t{mu_rast} has more than one band"
+                    band_d = band_d[0]
+                    if band_d.pixelType != 'U32':
+                        msg5a += (
+                            f"\n\t\t\t{mu_rast} pixel data type is not "
+                            "Unsigned 32-bit Integer"
                         )
-                        logf.write('\tOpen Source Package: ' + msg5)
+                    if band_d.noDataValue != 0:
+                        msg5b += (
+                            f"\n\t\t\t{mu_rast} NoData Value is not 0"
+                        )
+                    if band_d.name != 'MUKEY':
+                        msg5c += (
+                            f"\n\t\t\t{mu_rast} band is not named 'MUKEY'"
+                        )
                     
-                    # Raster band info
-                    # Band pixel data type
-                    band = os.path.join(
-                        dire, osdspatial, osraster[0], 'MUKEY'
-                    )
-                    bDepth = arcpy.Describe(band).pixelType
-                    if bDepth == 'U32':
-                        msg6 = (
-                            f"{success}{osraster[0]} has unsigned "
-                            "32 bit depth \n"
+                    rast_d = arcpy.Describe(f"{osrc_spatial}/{pa_rast}")
+                    sr = rast_d.spatialReference
+                    if sr.PCSCode != 5070:
+                        msg4 += (
+                            f"\n\t\t\t{pa_rast} has incorrect coordinate system"
                         )
-                        logf.write('\tOpen Source Package: ' + msg6)
-                    else:
-                        msg6 = (
-                            f"{fail}{osraster[0]} DOES NOT have unsigned "
-                            "32 bit depth \n"
+                    band_d = rast_d.children
+                    if len(band_d) != 1:
+                        msg5 += f"\n\t\t\t{pa_rast} has more than one band"
+                    band_d = band_d[0]
+                    if band_d.pixelType != 'U32':
+                        msg5a += (
+                            f"\n\t\t\t{pa_rast} pixel data type is not "
+                            "Unsigned 32-bit Integer"
                         )
-                        logf.write('\tOpen Source Package: ' + msg6)
+                    if band_d.noDataValue != 0:
+                        msg5b += (
+                            f"\n\t\t\t{pa_rast} NoData Value is not 0"
+                        )
+                    if band_d.name != 'LAOKEY':
+                        msg5c += (
+                            f"\n\t\t\t{pa_rast} band is not named 'LAOKEY'"
+                        )
+
+                    rast_d = arcpy.Describe(f"{osrc_spatial}/{sa_rast}")
+                    sr = rast_d.spatialReference
+                    if sr.PCSCode != 5070:
+                        msg4 += (
+                            f"\n\t\t\t{sa_rast} has incorrect coordinate system"
+                        )
+                    band_d = rast_d.children
+                    if len(band_d) != 1:
+                        msg5 += f"\n\t\t\t{sa_rast} has more than one band"
+                    band_d = band_d[0]
+                    if band_d.pixelType != 'U32':
+                        msg5a += (
+                            f"\n\t\t\t{sa_rast} pixel data type is not "
+                            "Unsigned 32-bit Integer"
+                        )
+                    if band_d.noDataValue != 0:
+                        msg5b += (
+                            f"\n\t\t\t{sa_rast} NoData Value is not 0"
+                        )
+                    if band_d.name != 'LKEY':
+                        msg5c += (
+                            f"\n\t\t\t{sa_rast} band is not named 'LKEY'"
+                        )
+                    cs = "Coordinate System: "
+                    bc = "Band Count: "
+                    dt = "Data Type: "
+                    nd = "NoData Value: "
+                    bn = "Band Name: "
+                    if msg4:
+                        msg4 = f'\n\t\t{cs:<{25}}FAILED' + msg4
                         errored = True
-                    # Band nodata
-                    nodata = arcpy.Describe(band).noDataValue
-                    if str(nodata) == '2147483647':
-                        msg7 = (
-                            f"{success}{osraster[0]} has the proper NoData"
-                            f" value {str(nodata)}\n"
-                        )
-                        logf.write('\tOpen Source Package: ' + msg7)
                     else:
-                        msg7 = (
-                            f"{fail}{osraster[0]} has an INCORRECT NoData "
-                            f"value of: {str(nodata)}\n"
-                        )
-                        logf.write('\tOpen Source Package: ' + msg7)
+                        msg4 = f'\n\t\t{cs:<{25}}NOMINAL'
+                    logf.write(msg4)
+                    if msg5:
+                        msg5 = f'\n\t\t{bc:<{25}}FAILED' + msg5
                         errored = True
+                    else:
+                        msg5 = f'\n\t\t{bc:<{25}}NOMINAL'
+                    logf.write(msg5)
+                    if msg5a:
+                        msg5a = f'\n\t\t{dt:<{25}}FAILED' + msg5a
+                        errored = True
+                    else:
+                        msg5a = f'\n\t\t{dt:<{25}}NOMINAL'
+                    logf.write(msg5a)
+                    if msg5b:
+                        msg5b = f'\n\t\t{nd:<{25}}FAILED' + msg5b
+                        errored = True
+                    else:
+                        msg5b = f'\n\t\t{nd:<{25}}NOMINAL'
+                    logf.write(msg5b)
+                    if msg5c:
+                        msg5c = f'\n\t\t{bn:<{25}}FAILED' + msg5c
+                        errored = True
+                    else:
+                        msg5c = f'\n\t\t{bn:<{25}}NOMINAL'
+                    logf.write(msg5c)
 
                     # Verify the txt tables
-                    ostables = set(os.listdir(osdtabular))
+                    ostables = set(os.listdir(osrc_tabular))
                     # Okay if present or missing README.txt
                     ostables.remove('README.txt')
-                    if ostables == textTables:
-                        msg8 = (success + os.path.basename(osp) + 
-                                ' has the required txt tables \n'
+                    msg8 = ''
+                    if missing := textTables - ostables:
+                        msg8 += ("\n\t\t\tMissing text tables: "
+                                f"{', '.join(missing)}"
                         )
-                        logf.write('\tOpen Source Package: ' + msg8)
-
-                        # Compare Raster and mapunit mukeys
-                        df = pd.read_csv(
-                            os.path.join(osdtabular, 'mapunit.txt'),
-                            sep = '|',
-                            names = txtColNames)
-                        df['mukey'] = df['mukey'].astype('string')
-                        txtkeys = set(df['mukey'].tolist())
-
-                        with (arcpy.da.SearchCursor(
-                            os.path.join(osdspatial, osraster[0]),
-                            'MUKEY') 
-                        as rows):
-                            rasterkeys = {row for row, in rows}
-
-                        if txtkeys == rasterkeys:
-                            msg9 = (
-                                f"{success} mukeys are identical in  "
-                                f"{osraster[0]} and the mapunit txt file\n"
-                            )
-                            logf.write('\tOpen Source Package: ' + msg9)
-                        else:
-                            not_rastk = txtkeys - rasterkeys or "None"
-                            not_txtk = rasterkeys - txtkeys or "None"
-                            msg9 = (
-                                f"{fail} mukeys ARE NOT identical in "
-                                f"{osraster[0]} and the mapunit.txt file\n"
-                                f"\tMUKEYs missing from raster: {not_rastk}\n\t"
-                                f"MUKEYs missing from mapunit.txt: {not_txtk}\n"
-                            )
-                            logf.write('\tOpen Source Package: ' + msg9)
-                            errored = True
-                    # Identify mismatch in text files
-                    else:
-                        extra_txt = ostables - textTables
-                        miss_txt = textTables - ostables
-                        msg6 = (
-                            f"{fail}{os.path.basename(osp)} is missing or "
-                            "has extraneous txt tables\n"
-                            f"\t\tMissing text files: {miss_txt}\n"
-                            f"\t\tExtra text files found: {extra_txt}\n"
+                    if extra := ostables - textTables:
+                        msg8 += ("\n\t\t\tExtra text tables: "
+                                f"{', '.join(extra)}"
                         )
-                        logf.write('\tOpen Source Package: ' + msg6)
+                    stem = "Text Files: "
+                    if msg8:
+                        msg8 = f'\n\t\t{stem:<{25}}FAILED ' + msg8
                         errored = True
+                    else:
+                        msg8 = f'\n\t\t{stem:<{25}}NOMINAL'
+                    logf.write(msg8)
 
-            # Check FGDB
-            esridir = dire + os.sep + 'RSS_' + state + ".gdb"
-            if not arcpy.Exists(esridir):
-                msg12 = f'{fail}ESRI geodatabase {esridir} not located\n'
-                logf.write('\tESRI GDB: ' + msg12)
+                    # Compare Raster and mapunit mukeys in mapunit.txt
+                    msg9 = ''
+                    df = pd.read_csv(
+                        os.path.join(osrc_tabular, 'mapunit.txt'),
+                        sep = '|',
+                        names = mu_cols)
+                    df['mukey'] = df['mukey'].astype(int)
+                    txtkeys = set(df['mukey'].tolist())
+                    mu_rast_p = f"{osrc_spatial}/{mu_rast}"
+                    with arcpy.da.SearchCursor(mu_rast_p, 'Value') as rows:
+                        rasterkeys = {mk for mk, in rows}
+
+                    if missing := txtkeys - rasterkeys:
+                        msg9 += ("\n\t\t\tMissing MUKEY's: "
+                                f"{', '.join(map(str, missing))}"
+                        )
+                    if extra := rasterkeys - txtkeys:
+                        msg9 += ("\n\t\t\tExtra MUKEYS: "
+                                f"{', '.join(map(str, extra))}"
+                        )
+
+                    df = pd.read_csv(
+                        os.path.join(osrc_tabular, 'lareao.txt'),
+                        sep = '|',
+                        names = lao_cols)
+                    sub_df = df[df['areatypename'] == 'Raster Soil Survey Project']
+                    keys = sub_df['lareaovkey'].astype(int)
+                    txtkeys = set(keys.tolist())
+                    pa_rast_p = f"{osrc_spatial}/{pa_rast}"
+                    with arcpy.da.SearchCursor(pa_rast_p, 'Value') as rows:
+                        rasterkeys = {lk for lk, in rows}
+                    if missing := txtkeys - rasterkeys:
+                        msg9 += ("\n\t\t\tMissing LAOKEY's: "
+                                f"{', '.join(map(str, missing))}"
+                        )
+                    if extra := rasterkeys - txtkeys:
+                        msg9 += ("\n\t\t\tExtra LAOKEYS: "
+                                f"{', '.join(map(str, extra))}"
+                        )
+
+                    df = pd.read_csv(
+                        os.path.join(osrc_tabular, 'legend.txt'),
+                        sep = '|',
+                        names = l_cols)
+                    df['lkey'] = df['lkey'].astype(int)
+                    txtkeys = set(df['lkey'].tolist())
+                    sa_rast_p = f"{osrc_spatial}/{sa_rast}"
+                    with arcpy.da.SearchCursor(sa_rast_p, 'Value') as rows:
+                        rasterkeys = {lk for lk, in rows}
+                    if missing := txtkeys - rasterkeys:
+                        msg9 += ("\n\t\t\tMissing LKEY's: "
+                                f"{', '.join(map(str, missing))}"
+                        )
+                    if extra := rasterkeys - txtkeys:
+                        msg9 += ("\n\t\t\tExtra LKEYS: "
+                                f"{', '.join(map(str, extra))}"
+                        )
+                    stem = "Raster Keys: "
+                    if msg9:
+                        msg9 = f'\n\t\t{stem:<{25}}FAILED ' + msg9
+                        errored = True
+                    else:
+                        msg9 = f'\n\t\t{stem:<{25}}NOMINAL'
+
+                    logf.write(msg9)
+
+            # Check File Geodatabase
+            arcpy.env.workspace = fgdb
+                # MURASTER
+            msg3 = ''
+            mu_rast = f'MURASTER_10m_{st}_{fy}'
+            if not arcpy.ListRasters(mu_rast):
+                msg3 += f'\n\t\t\tMissing {mu_rast} in {fgdb}'
+                # PARASTER
+            pa_rast = f'PARASTER_10m_{st}_{fy}'
+            if not arcpy.ListRasters(pa_rast):
+                msg3 += f'\n\t\t\tMissing {pa_rast} in {fgdb}'
+                # SARASTER
+            sa_rast = f'SARASTER_10m_{st}_{fy}'
+            if not arcpy.ListRasters(sa_rast):
+                msg3 += f'\n\t\t\tMissing {sa_rast} in {fgdb}'
+            stem = 'Naming Convention: '
+            if msg3:
+                msg3 = '\n\tFile Geodatabase: ' \
+                    f'\n\t\t{stem:<{25}}FAILED' + msg3
                 errored = True
-                return errored
             else:
-                # Check raster in FGDB
-                arcpy.env.workspace = esridir
-                esriraster = arcpy.ListRasters()
-                # Only one raster should be present
-                if not esriraster:
-                    msg13 = fail + 'unable to find a MURASTER_10m'
-                    logf.write('\tESRI GDB: ' + msg13)
-                    errored = True
-                elif len(esriraster) > 1:
-                    msg13 = f'{fail}More than one raster found in {esridir}'
-                    logf.write('\tESRI GDB: ' + msg13)
-                    errored = True
-                # Does is start with standard name trunk
-                elif not esriraster[0].startswith('MURASTER_10m'):
-                    msg13 = fail + 'unable to locate the MURASTER_10m\n'
-                    logf.write('\tESRI GDB: ' + msg13)
-                    errored = True
-                # needs three '_' to distinguish:
-                # prefix, resolution, state, year
-                elif esriraster[0].count("_") != 3:
-                    msg13 = (fail + 
-                            'unable to locate a properly identified '
-                            'MURASTER_10m_date-stamp tif raster\n')
-                    logf.write('\tESRI GDB: ' + msg13)
-                    errored = True
-                # Look for FY: yyyy
-                esriraster = esriraster[0]
-                try:
-                    fy = int(esriraster[-4:])
-                    if (fy > cyi) or (fy < cyf):
-                        msg13 = (
-                                f"{success}located properly named tif "
-                                f"raster {esriraster}\n"
-                            )
-                        logf.write('\tESRI GDB: ' + msg13)
-                    else:
-                        msg13 = (f"{fail}unable validate Fiscal Year {fy} "
-                                f"for {esriraster}\n"
-                        )
-                        logf.write('\tESRI GDB: ' + msg13)
-                        errored = True
-                except:
-                    msg13 = (f"{fail}unable validate date stamp {fy}"
-                                f"for {esriraster}\n"
-                            )
-                    logf.write('\tESRI GDB: ' + msg13)
-                    errored = True
+                msg3 = '\n\tFile Geodatabase: ' \
+                    f'\n\t\t{stem:<{25}}NOMINAL' + msg3
+            logf.write(msg3)
 
-                # Raster spatial reference
-                murasdesc = arcpy.Describe(esriraster)
-                sr = murasdesc.spatialReference
-                if sr.PCSCode != 0:
-                    if sr.PCSCode not in [5070, 3338, 32161]:
-                        msg15 = (
-                            f"{fail}gdb raster has unknown or unsupported "
-                            "spatial reference\n"
-                        )
-                        logf.write('\tESRI GDB: ' + msg15)
-                        errored = True
-                    else:
-                        msg15 = (
-                            f"{success}{esriraster} has valid spatial "
-                            "reference\n"
-                        )
-                        logf.write('\tESRI GDB: ' + msg15)
-                elif not sr.name == 'Hawaii_Albers_Equal_Area_Conic':
-                    msg15 = (
-                        f"{fail}{esriraster} has unknown or "
-                        "unsupported spatial reference\n"
+            # Raster spatial reference
+            # will need to be updated once RSS are 
+            # published beyond CONUS
+            msg4 = '' # Spatial Reference
+            msg5 = '' # band count
+            msg5a = '' # data type
+            msg5b = '' # no data value
+            msg5c = '' # Band name
+
+            # FGDB rasters don't seem to hold the NoData value
+            rast_d = arcpy.Describe(f"{fgdb}/{mu_rast}")
+            sr = rast_d.spatialReference
+            if sr.PCSCode != 5070:
+                msg4 += (
+                    f"\n\t\t\t{mu_rast} has incorrect coordinate system"
+                )
+            band_d = rast_d.children
+            if len(band_d) != 1:
+                msg5 += f"\n\t\t\t{mu_rast} has more than one band"
+            band_d = band_d[0]
+            if band_d.pixelType != 'U32':
+                msg5a += (
+                    f"\n\t\t\t{mu_rast} pixel data type is not "
+                    "Unsigned 32-bit Integer"
+                )
+            # if band_d.noDataValue != 0:
+            #     msg5b += (
+            #         f"\n\t\t\t{mu_rast} NoData Value is not 0"
+            #     )
+            if band_d.name != 'MUKEY':
+                msg5c += (
+                    f"\n\t\t\t{mu_rast} band is not named 'MUKEY'"
+                )
+            
+            rast_d = arcpy.Describe(f"{fgdb}/{pa_rast}")
+            sr = rast_d.spatialReference
+            if sr.PCSCode != 5070:
+                msg4 += (
+                    f"\n\t\t\t{pa_rast} has incorrect coordinate system"
+                )
+            band_d = rast_d.children
+            if len(band_d) != 1:
+                msg5 += f"\n\t\t\t{pa_rast} has more than one band"
+            band_d = band_d[0]
+            if band_d.pixelType != 'U32':
+                msg5a += (
+                    f"\n\t\t\t{pa_rast} pixel data type is not "
+                    "Unsigned 32-bit Integer"
+                )
+            # if band_d.noDataValue != 0:
+            #     msg5b += (
+            #         f"\n\t\t\t{pa_rast} NoData Value is not 0"
+            #     )
+            if band_d.name != 'LAOKEY':
+                msg5c += (
+                    f"\n\t\t\t{pa_rast} band is not named 'LAOKEY'"
+                )
+
+            rast_d = arcpy.Describe(f"{fgdb}/{sa_rast}")
+            sr = rast_d.spatialReference
+            if sr.PCSCode != 5070:
+                msg4 += (
+                    f"\n\t\t\t{sa_rast} has incorrect coordinate system"
+                )
+            band_d = rast_d.children
+            if len(band_d) != 1:
+                msg5 += f"\n\t\t\t{sa_rast} has more than one band"
+            band_d = band_d[0]
+            if band_d.pixelType != 'U32':
+                msg5a += (
+                    f"\n\t\t\t{sa_rast} pixel data type is not "
+                    "Unsigned 32-bit Integer"
+                )
+            # if band_d.noDataValue != 0:
+            #     msg5b += (
+            #         f"\n\t\t\t{sa_rast} NoData Value is not 0"
+            #     )
+            if band_d.name != 'LKEY':
+                msg5c += (
+                    f"\n\t\t\t{sa_rast} band is not named 'LKEY'"
+                )
+
+            if msg4:
+                msg4 = f'\n\t\t{cs:<{25}}FAILED' + msg4
+                errored = True
+            else:
+                msg4 = f'\n\t\t{cs:<{25}}NOMINAL'
+            logf.write(msg4)
+            if msg5:
+                msg5 = f'\n\t\t{bc:<{25}}FAILED' + msg5
+                errored = True
+            else:
+                msg5 = f'\n\t\t{bc:<{25}}NOMINAL'
+            logf.write(msg5)
+            if msg5a:
+                msg5a = f'\n\t\t{dt:<{25}}FAILED' + msg5a
+                errored = True
+            else:
+                msg5a = f'\n\t\t{dt:<{25}}NOMINAL'
+            logf.write(msg5a)
+            # if msg5b:
+            #     msg5b = f'\n\t\t{nd:<{25}}FAILED' + msg5b
+            #     errored = True
+            # else:
+            #     msg5b = f'\n\t\t{nd:<{25}}NOMINAL'
+            # logf.write(msg5b)
+            if msg5c:
+                msg5c = f'\n\t\t{bn:<{25}}FAILED' + msg5c
+                errored = True
+            else:
+                msg5c = f'\n\t\t{bn:<{25}}NOMINAL'
+            logf.write(msg5c)
+
+            # Verify the FGDB tables
+            fgb_tabs = set(arcpy.ListTables())
+            msg8 = ''
+            if missing := ssurgTables - fgb_tabs:
+                msg8 += ("\n\t\t\tMissing text tables: "
+                        f"{', '.join(missing)}"
+                )
+            if extra := fgb_tabs - ssurgTables:
+                msg8 += ("\n\t\t\tExtra text tables: "
+                        f"{', '.join(extra)}"
+                )
+            stem = "Text Tables: "
+            if msg8:
+                msg8 = f'\n\t\t{stem:<{25}}FAILED ' + msg8
+                errored = True
+            else:
+                msg8 = f'\n\t\t{stem:<{25}}NOMINAL'
+            logf.write(msg8)
+
+            # Compare Raster and mapunit mukeys in mapunit.txt
+            msg9 = ''
+            with arcpy.da.SearchCursor(fgdb + '/mapunit', 'mukey') as rows:
+                tabkeys = {int(mk) for mk, in rows}
+            mu_rast_p = f"{fgdb}/{mu_rast}"
+            with arcpy.da.SearchCursor(mu_rast_p, 'Value') as rows:
+                rasterkeys = {mk for mk, in rows}
+
+            if missing := tabkeys - rasterkeys:
+                msg9 += ("\n\t\t\tMissing MUKEY's: "
+                        f"{', '.join(map(str, missing))}"
+                )
+            if extra := rasterkeys - tabkeys:
+                msg9 += ("\n\t\t\tExtra MUKEYS: "
+                        f"{', '.join(map(str, extra))}"
+                )
+
+            with arcpy.da.SearchCursor(
+                fgdb + '/laoverlap', 'lareaovkey', 
+                where_clause="areatypename='Raster Soil Survey Project'"
+                ) as rows:
+                tabkeys = {int(lk) for lk, in rows}
+            pa_rast_p = f"{fgdb}/{pa_rast}"
+            with arcpy.da.SearchCursor(pa_rast_p, 'Value') as rows:
+                rasterkeys = {lk for lk, in rows}
+            if missing := tabkeys - rasterkeys:
+                msg9 += ("\n\t\t\tMissing LAOKEY's: "
+                        f"{', '.join(map(str, missing))}"
+                )
+            if extra := rasterkeys - tabkeys:
+                msg9 += ("\n\t\t\tExtra LAOKEYS: "
+                        f"{', '.join(map(str, extra))}"
+                )
+
+            with arcpy.da.SearchCursor(fgdb + '/legend', 'lkey') as rows:
+                tabkeys = {int(lk) for lk, in rows}
+            sa_rast_p = f"{fgdb}/{sa_rast}"
+            with arcpy.da.SearchCursor(sa_rast_p, 'Value') as rows:
+                rasterkeys = {lk for lk, in rows}
+            if missing := tabkeys - rasterkeys:
+                msg9 += ("\n\t\t\tMissing LKEY's: "
+                        f"{', '.join(map(str, missing))}"
+                )
+            if extra := rasterkeys - tabkeys:
+                msg9 += ("\n\t\t\tExtra LKEYS: "
+                        f"{', '.join(map(str, extra))}"
+                )
+            stem = "Raster Keys: "
+            if msg9:
+                msg9 = f'\n\t\t{stem:<{25}}FAILED ' + msg9
+                errored = True
+            else:
+                msg9 = f'\n\t\t{stem:<{25}}NOMINAL'
+            logf.write(msg9)
+
+            # Raster topology
+            # raster calculator and isnull and union of extent
+            arcpy.env.workspace = osrc_spatial
+            msg10 = ''
+            p_rast = arcpy.Raster(f"{osrc_spatial}/{pa_rast}.tif")
+            m_rast = arcpy.Raster(f"{osrc_spatial}/{mu_rast}.tif")
+            s_rast = arcpy.Raster(f"{osrc_spatial}/{sa_rast}.tif")
+            
+            try:
+                out_r = osrc_spatial + "/PARASTER_exceed_MU.tif"
+                with arcpy.EnvManager(extent=p_rast.extent):
+                    pa_within = arcpy.sa.IsNull(m_rast) & p_rast
+                pa_within.save(out_r)
+                del pa_within
+                gm = arcpy.management.GetRasterProperties(
+                        in_raster=out_r,
+                        property_type="MAXIMUM"
                     )
-                    logf.write('\tESRI GDB: ' + msg15)
-                    errored = True
+                if int(gm[0]):
+                    msg10 += ("\n\t\t\tNot all pixels of PARASTER "
+                    f"covered by MURASTER, see {out_r}")
                 else:
-                    msg15 = (
-                        f"{success}{esriraster} has valid "
-                        "spatial reference\n"
-                    )
-                    logf.write('\tESRI GDB: ' + msg15)
+                    arcpy.Delete_management(out_r)
 
-                # Raster band info
-                # Band pixel data type
-                # Get band name
-                rast = arcpy.Raster(esriraster)
-                bands = rast.bandNames
-                if len(bands) > 1:
-                    msg15_5 = (f"{fail}gdb raster is multiband "
-                               f"and has {len(bands)} bands")
-                    logf.write('\tESRI GDB: ' + msg15_5)
-                    del rast
-                    raise
-                band = bands[0]
-                del rast
-
-                esriband = os.path.join(esriraster, band)
-                esriDepth = arcpy.Describe(esriband).pixelType
-                if esriDepth == 'U32':
-                    msg16 = (
-                        f"{success}{esriraster} has unsigned "
-                        "32 bit depth \n"
+                out_r = osrc_spatial + "/MURASTER_exceed_PA.tif"
+                with arcpy.EnvManager(extent=m_rast.extent):
+                    mu_within = arcpy.sa.IsNull(p_rast) & m_rast
+                mu_within.save(out_r)
+                del mu_within
+                gm = arcpy.management.GetRasterProperties(
+                        in_raster=out_r,
+                        property_type="MAXIMUM"
                     )
-                    logf.write('\tESRI GDB: ' + msg16)
+                if int(gm[0]):
+                    msg10 += ("\n\t\t\tNot all pixels of MURASTER "
+                    f"covered by PARASTER, see {out_r}")
                 else:
-                    msg16 = (
-                        f"{fail}{esriraster} DOES NOT have unsigned "
-                        "32 bit depth \n"
-                    )
-                    logf.write('\tESRI GDB: ' + msg16)
-                    errored = True
-
-                # Validate FGDB
-                # only the right txt tables
-                fgdb = f"{dire}/RSS_{state}.gdb"
-                arcpy.env.workspace = fgdb
-                gdbtables = set(arcpy.ListTables())
-                if gdbtables == ssurgTables:
-                    msg18 = (
-                        f"{success}{fgdb} has the "
-                        "required gdb tables \n"
-                    )
-                    logf.write('\tESRI GDB: ' + msg18)
-
-                    # Compuare raster and mapunit mukeys
-                    with(
-                        arcpy.da.SearchCursor(fgdb + '/mapunit', 'mukey') 
-                        as rows):
-                        gdbkeys = {row for row, in rows}
-
-                    with(
-                        arcpy.da.SearchCursor(f"{fgdb}/{esriraster}", 'MUKEY')
-                        as rows):
-                        rasterkeys = {row for row, in rows}
-
-                    if gdbkeys == rasterkeys:
-                        msg20 = (
-                            f"{success}mukeys are identical in "
-                            f"{esriraster} and the mapunit gdb table\n"
-                        )
-                        logf.write('\tESRI GDB: ' + msg20)
-                    else:
-                        not_rastk = gdbkeys - rasterkeys or "None"
-                        not_gdbk = rasterkeys - gdbkeys or "None"
-                        msg20 = (
-                            f"{fail} mukeys ARE NOT identical in "
-                            f"{esriraster} and the mapunit table\n"
-                            f"\t\tMUKEYs missing from raster: {not_rastk}\n\t\t"
-                            f"MUKEYs missing from mapunit table: {not_gdbk}\n"
-                        )
-                        logf.write('\tESRI GDB: ' + msg20)
-                        errored = True
-                # Identify mismatch in FGDB tables
+                    arcpy.Delete_management(out_r)  
+            except:
+                etype, exc, tb = sys.exc_info()
+                if "Invalid output extent" in str(exc):
+                    msg10 += "\n\t\t\tPARASTER and MURASTER do not overlap"
                 else:
-                    miss_gdb = ssurgTables - gdbtables
-                    extra_tabs = gdbtables - ssurgTables
-                    msg19 = (
-                        f"{fail}{os.path.basename(osp)} is missing or "
-                        "has extraneous txt tables\n"
-                        f"\t\tMissing files within FGDB: {miss_gdb}\n"
-                        f"\t\tExtra files found in FGDB: {extra_tabs}\n"
+                    func = sys._getframe().f_code.co_name
+                    arcpy.AddError(pyErr(func))
+                    
+            try:
+                out_r = osrc_spatial + "/PARASTER_exceed_SA.tif"
+                with arcpy.EnvManager(extent=p_rast.extent):
+                    pa_within = arcpy.sa.IsNull(s_rast) & p_rast
+                pa_within.save(out_r)
+                del pa_within
+                gm = arcpy.management.GetRasterProperties(
+                        in_raster=out_r,
+                        property_type="MAXIMUM"
                     )
-                    logf.write('\tESRI GDB: ' + msg19)
-                    errored = True
-            logf.write('\n')
+                if int(gm[0]):
+                    msg10 += ("\n\t\t\tNot all pixels of PARASTER "
+                    f"covered by SARASTER, see {out_r}")
+                else:
+                    arcpy.Delete_management(out_r) 
+            except:
+                etype, exc, tb = sys.exc_info()
+                if "Invalid output extent" in str(exc):
+                    msg10 += "\n\t\t\tPARASTER and SARASTER do not overlap"
+                else:
+                    func = sys._getframe().f_code.co_name
+                    arcpy.AddError(pyErr(func))
+
+            try:
+                out_r = osrc_spatial + "/MURASTER_exceed_SA.tif"
+                with arcpy.EnvManager(extent=m_rast.extent):
+                    mu_within = arcpy.sa.IsNull(s_rast) & m_rast
+                mu_within.save(out_r)
+                del mu_within
+                gm = arcpy.management.GetRasterProperties(
+                        in_raster=out_r,
+                        property_type="MAXIMUM"
+                    )
+                if int(gm[0]):
+                    msg10 += ("\n\t\t\tNot all pixels of MURASTER "
+                    f"covered by SARASTER, see {out_r}")
+                else:
+                    arcpy.Delete_management(out_r) 
+            except:
+                etype, exc, tb = sys.exc_info()
+                if "Invalid output extent" in str(exc):
+                    msg10 += "\n\t\t\tSARASTER and MURASTER do not overlap"
+                else:
+                    func = sys._getframe().f_code.co_name
+                    arcpy.AddError(pyErr(func))
+
+            del s_rast, p_rast, m_rast
+            stem = "Raster Topology: "
+            if msg10:
+                msg10 = f'\n\t\t{stem:<{25}}FAILED ' + msg10
+                errored = True
+            else:
+                msg10 = f'\n\t\t{stem:<{25}}NOMINAL'
+            logf.write(msg10)
+
         return errored
     except arcpy.ExecuteError:
         func = sys._getframe().f_code.co_name
         arcpy.AddError(arcpyErr(func))
-        return False
+        return True
     except:
         func = sys._getframe().f_code.co_name
         arcpy.AddError(pyErr(func))
-        return False
+        return True
 
 
 def main(args: list[str, str, int]) -> str:
@@ -622,7 +862,7 @@ def main(args: list[str, str, int]) -> str:
     with the underscore if unsuccessful <ST_>
     """
     try:
-        v = '1.2'
+        
         rss_dir = args[0]
         st = args[1]
         i = args[2]
@@ -631,10 +871,10 @@ def main(args: list[str, str, int]) -> str:
         
         user = os.environ.get('USERNAME')
         now = datetime.now()
-        now_str = now.strftime("%d/%m/%Y %H:%M:%S")
+        now_str = now.strftime("%m/%d/%Y %H:%M:%S")
 
         dir_contents = os.listdir(rss_dir)
-        # Is it Double bagged?
+        # Is it Double bagged? As in directory <ST>/<ST>
         double_bagged = [d for d in dir_contents 
                          if os.path.isdir(f"{rss_dir}/{d}") and (d == st)]
         if double_bagged:
@@ -653,10 +893,12 @@ def main(args: list[str, str, int]) -> str:
 
             errored = insstatedir(rss_dir, logf)
             if errored:
-                arcpy.AddError(
-                    f"\tA validation error was found, see {log}"
+                arcpy.AddWarning(
+                    f"\tA validation error(s) found, see {log}"
                 )
                 st = st + '_'
+            else:
+                arcpy.AddMessage("\tValidation results are Nominal")
 
         logf.close()
         return st
