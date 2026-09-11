@@ -13,10 +13,14 @@ Created on: 09/19/2024
     @organization: National Soil Survey Center, USDA-NRCS
     @email: alexander.stum@usda.gov
 
-@modified Update 9/26/2025
+@modified Update 7/17/2026
     @by: Alexnder Stum
-@version: 1.2.1
+@version: 2.0
 
+# --- Update 7/17/2026 v 2.0
+- Removed input paramters rast_n and fy
+- Removed copy raster steps (now performed by import_raster_fgdb)
+- only makes tabular directory
 # --- Update 10/16/24 v 1.2.1
 - Checks files found to tabs_req variable and messages out names of 
     extraneous files
@@ -115,32 +119,18 @@ def main(args: list[str, str, str, int, str]) ->str:
         directory. Otherwise returns an empty string.
     """
     try:
-        v = '1.2'
+        v = '2.0'
         arcpy.AddMessage(f"\nExport Package, {v = !s}")
         gdb_p = args[0] # input RSS gdb
         input_p = args[1] # input tablular folder
         st = args[2] # State
-        fy = args[3] # fiscal year of publication
-        raster_n = args[4] # MURASTER name
 
-        # Make export directory
+        # Make tabular export directory
         out_p = os.path.dirname(gdb_p)
-        export_p = f"{out_p}/RSS_{st}"
+        export_p = f"{out_p}/RSS_{st}/tabular"
         os.mkdir(export_p)
-        # Add spatial and taubular sub directories
-        dirs = ['spatial', 'tabular']
-        for d in dirs:
-            os.mkdir(f"{export_p}/{d}")
-
-        # Export MURASTER as tif
-        out_r = f"{export_p}/spatial/{raster_n}.tif"
-        arcpy.management.CopyRaster(
-            f"{gdb_p}/{raster_n}", out_r, None, None, None, None, None, 
-            "32_BIT_UNSIGNED"
-        )
 
         # Copy over tabular textfiles from source
-        tab_out = f"{export_p}/tabular"
         tabs_req = [
             'ccancov.txt', 'ccrpyd.txt', 'cdfeat.txt', 'cecoclas.txt',
             'ceplants.txt', 'cerosnac.txt', 'cfprod.txt', 'cfprodo.txt',
@@ -164,7 +154,7 @@ def main(args: list[str, str, str, int, str]) ->str:
 
         for f in os.scandir(input_p):
             if f.is_file() and f.name in tabs_req:
-                shutil.copy(f.path, f"{tab_out}/{f.name}")
+                shutil.copy(f.path, f"{export_p}/{f.name}")
                 tabs_req.remove(f.name)
             elif f.is_file():
                 arcpy.AddWarning(
@@ -173,7 +163,7 @@ def main(args: list[str, str, str, int, str]) ->str:
             
         if tabs_req:
             arcpy.AddWarning(
-                f"\tThe following text files were not copied over to {tab_out}:"
+                f"\tThe following text files were not copied over to {export_p}:"
                 )
             for t in tabs_req:
                 arcpy.AddWarning(f"\t\t{t}")
