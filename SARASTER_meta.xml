@@ -1,0 +1,1231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdb:MD_Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cat="http://standards.iso.org/iso/19115/-3/cat/1.0" xmlns:cit="http://standards.iso.org/iso/19115/-3/cit/1.0" xmlns:gcx="http://standards.iso.org/iso/19115/-3/gcx/1.0" xmlns:gex="http://standards.iso.org/iso/19115/-3/gex/1.0" xmlns:lan="http://standards.iso.org/iso/19115/-3/lan/1.0" xmlns:srv="http://standards.iso.org/iso/19115/-3/srv/2.0" xmlns:mac="http://standards.iso.org/iso/19115/-3/mac/1.0" xmlns:mas="http://standards.iso.org/iso/19115/-3/mas/1.0" xmlns:mcc="http://standards.iso.org/iso/19115/-3/mcc/1.0" xmlns:mco="http://standards.iso.org/iso/19115/-3/mco/1.0" xmlns:mda="http://standards.iso.org/iso/19115/-3/mda/1.0" xmlns:mdb="http://standards.iso.org/iso/19115/-3/mdb/1.0" xmlns:mdt="http://standards.iso.org/iso/19115/-3/mdt/1.0" xmlns:mex="http://standards.iso.org/iso/19115/-3/mex/1.0" xmlns:mrl="http://standards.iso.org/iso/19115/-3/mrl/1.0" xmlns:mds="http://standards.iso.org/iso/19115/-3/mds/1.0" xmlns:mmi="http://standards.iso.org/iso/19115/-3/mmi/1.0" xmlns:mpc="http://standards.iso.org/iso/19115/-3/mpc/1.0" xmlns:mrc="http://standards.iso.org/iso/19115/-3/mrc/1.0" xmlns:mrd="http://standards.iso.org/iso/19115/-3/mrd/1.0" xmlns:mri="http://standards.iso.org/iso/19115/-3/mri/1.0" xmlns:mrs="http://standards.iso.org/iso/19115/-3/mrs/1.0" xmlns:msr="http://standards.iso.org/iso/19115/-3/msr/1.0" xmlns:mdq="http://standards.iso.org/iso/19157/-2/mdq/1.0" xmlns:dqc="http://standards.iso.org/iso/19157/-2/dqc/1.0" xmlns:gco="http://standards.iso.org/iso/19115/-3/gco/1.0" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:xlink="http://www.w3.org/1999/xlink">
+<mdb:defaultLocale>
+<lan:PT_Locale>
+<lan:language>
+<lan:LanguageCode codeList="http://www.loc.gov/standards/iso639-2/php/code_list.php" codeListValue="eng">eng</lan:LanguageCode>
+</lan:language>
+<lan:country>
+<lan:CountryCode codeList="http://www.iso.org/iso/country_codes/iso_3166_code_lists.htm" codeListValue="US">US</lan:CountryCode>
+</lan:country>
+<lan:characterEncoding>
+<lan:MD_CharacterSetCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#MD_CharacterSetCode" codeListValue="utf8">utf8</lan:MD_CharacterSetCode>
+</lan:characterEncoding>
+</lan:PT_Locale>
+</mdb:defaultLocale>
+<mdb:metadataScope>
+<mdb:MD_MetadataScope>
+<mdb:resourceScope>
+<mcc:MD_ScopeCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#MD_ScopeCode" codeListValue="dataset">dataset</mcc:MD_ScopeCode>
+</mdb:resourceScope>
+<mdb:name>
+<gco:CharacterString>dataset</gco:CharacterString>
+</mdb:name>
+</mdb:MD_MetadataScope>
+</mdb:metadataScope>
+<mdb:contact>
+<cit:CI_Responsibility>
+<cit:role>
+<cit:CI_RoleCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#CI_RoleCode" codeListValue="pointOfContact">pointOfContact</cit:CI_RoleCode>
+</cit:role>
+<cit:party>
+<cit:CI_Organisation>
+<cit:name>
+<gco:CharacterString>U.S. Department of Agriculture, Natural Resources Conservation Service, Soil and Plant Science Division</gco:CharacterString>
+</cit:name>
+<cit:contactInfo>
+<cit:CI_Contact>
+<cit:phone>
+<cit:CI_Telephone>
+<cit:number>
+<gco:CharacterString>(402) 437-5378</gco:CharacterString>
+</cit:number>
+<cit:numberType>
+<cit:CI_TelephoneTypeCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#CI_TelephoneTypeCode" codeListValue="voice">voice</cit:CI_TelephoneTypeCode>
+</cit:numberType>
+</cit:CI_Telephone>
+</cit:phone>
+<cit:phone>
+<cit:CI_Telephone>
+<cit:number>
+<gco:CharacterString>(402) 437-5379</gco:CharacterString>
+</cit:number>
+<cit:numberType>
+<cit:CI_TelephoneTypeCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#CI_TelephoneTypeCode" codeListValue="voice">voice</cit:CI_TelephoneTypeCode>
+</cit:numberType>
+</cit:CI_Telephone>
+</cit:phone>
+<cit:address>
+<cit:CI_Address>
+<cit:deliveryPoint>
+<gco:CharacterString>National Soil Survey Center</gco:CharacterString>
+</cit:deliveryPoint>
+<cit:deliveryPoint>
+<gco:CharacterString>1121 Lincoln Mall</gco:CharacterString>
+</cit:deliveryPoint>
+<cit:deliveryPoint>
+<gco:CharacterString>Suite 230</gco:CharacterString>
+</cit:deliveryPoint>
+<cit:city>
+<gco:CharacterString>Lincoln</gco:CharacterString>
+</cit:city>
+<cit:administrativeArea>
+<gco:CharacterString>NE</gco:CharacterString>
+</cit:administrativeArea>
+<cit:postalCode>
+<gco:CharacterString>68508</gco:CharacterString>
+</cit:postalCode>
+<cit:country>
+<lan:CountryCode codeList="http://www.iso.org/iso/country_codes/iso_3166_code_lists.htm" codeListValue="US">US</lan:CountryCode>
+</cit:country>
+<cit:electronicMailAddress>
+<gco:CharacterString>SoilsHotline@usda.gov</gco:CharacterString>
+</cit:electronicMailAddress>
+</cit:CI_Address>
+</cit:address>
+</cit:CI_Contact>
+</cit:contactInfo>
+<cit:individual>
+<cit:CI_Individual>
+<cit:name>
+<gco:CharacterString>Soil Survey Staff</gco:CharacterString>
+</cit:name>
+<cit:positionName>
+<gco:CharacterString>GIS Specialist</gco:CharacterString>
+</cit:positionName>
+</cit:CI_Individual>
+</cit:individual>
+</cit:CI_Organisation>
+</cit:party>
+</cit:CI_Responsibility>
+</mdb:contact>
+<mdb:dateInfo>
+<cit:CI_Date>
+<cit:date>
+<gco:DateTime>2026-07-16T00:00:00</gco:DateTime>
+</cit:date>
+<cit:dateType>
+<cit:CI_DateTypeCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#CI_DateTypeCode" codeListValue="revision">revision</cit:CI_DateTypeCode>
+</cit:dateType>
+</cit:CI_Date>
+</mdb:dateInfo>
+<mdb:metadataStandard>
+<cit:CI_Citation>
+<cit:title>
+<gco:CharacterString>ISO 19115-3 Geographic Information - Metadata - Part 1: Fundamentals</gco:CharacterString>
+</cit:title>
+<cit:edition>
+<gco:CharacterString>2014</gco:CharacterString>
+</cit:edition>
+</cit:CI_Citation>
+</mdb:metadataStandard>
+<mdb:spatialRepresentationInfo>
+<msr:MD_Georectified>
+<msr:numberOfDimensions>
+<gco:Integer>2</gco:Integer>
+</msr:numberOfDimensions>
+<msr:axisDimensionProperties>
+<msr:MD_Dimension>
+<msr:dimensionName>
+<msr:MD_DimensionNameTypeCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#MD_DimensionNameTypeCode" codeListValue="column">column</msr:MD_DimensionNameTypeCode>
+</msr:dimensionName>
+<msr:dimensionSize>
+<gco:Integer>2995</gco:Integer>
+</msr:dimensionSize>
+<msr:resolution>
+<gco:Measure uom="m">10.000000</gco:Measure>
+</msr:resolution>
+</msr:MD_Dimension>
+</msr:axisDimensionProperties>
+<msr:axisDimensionProperties>
+<msr:MD_Dimension>
+<msr:dimensionName>
+<msr:MD_DimensionNameTypeCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#MD_DimensionNameTypeCode" codeListValue="row">row</msr:MD_DimensionNameTypeCode>
+</msr:dimensionName>
+<msr:dimensionSize>
+<gco:Integer>5163</gco:Integer>
+</msr:dimensionSize>
+<msr:resolution>
+<gco:Measure uom="m">10.000000</gco:Measure>
+</msr:resolution>
+</msr:MD_Dimension>
+</msr:axisDimensionProperties>
+<msr:cellGeometry>
+<msr:MD_CellGeometryCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#MD_CellGeometryCode" codeListValue="area">area</msr:MD_CellGeometryCode>
+</msr:cellGeometry>
+<msr:transformationParameterAvailability>
+<gco:Boolean>false</gco:Boolean>
+</msr:transformationParameterAvailability>
+<msr:checkPointAvailability>
+<gco:Boolean>false</gco:Boolean>
+</msr:checkPointAvailability>
+<msr:checkPointDescription>
+<gco:CharacterString>snapped to gSSURGO</gco:CharacterString>
+</msr:checkPointDescription>
+<msr:cornerPoints>
+<gml:Point>
+<gml:pos>352715.000000 1028335.000000</gml:pos>
+</gml:Point>
+</msr:cornerPoints>
+<msr:cornerPoints>
+<gml:Point>
+<gml:pos>352715.000000 1079965.000000</gml:pos>
+</gml:Point>
+</msr:cornerPoints>
+<msr:cornerPoints>
+<gml:Point>
+<gml:pos>382665.000000 1079965.000000</gml:pos>
+</gml:Point>
+</msr:cornerPoints>
+<msr:cornerPoints>
+<gml:Point>
+<gml:pos>382665.000000 1028335.000000</gml:pos>
+</gml:Point>
+</msr:cornerPoints>
+<msr:centrePoint>
+<gml:Point>
+<gml:pos>367690.000000 1054150.000000</gml:pos>
+</gml:Point>
+</msr:centrePoint>
+<msr:pointInPixel>
+<msr:MD_PixelOrientationCode>centre</msr:MD_PixelOrientationCode>
+</msr:pointInPixel>
+</msr:MD_Georectified>
+</mdb:spatialRepresentationInfo>
+<mdb:referenceSystemInfo>
+<mrs:MD_ReferenceSystem>
+<mrs:referenceSystemIdentifier>
+<mcc:MD_Identifier>
+<mcc:authority>
+<cit:CI_Citation>
+<cit:title>
+<gco:CharacterString>NAD83 / Conus Albers</gco:CharacterString>
+</cit:title>
+<cit:alternateTitle>
+<gco:CharacterString>Projected Coordinate System NAD 1983 Contiguous USA Albers</gco:CharacterString>
+</cit:alternateTitle>
+<cit:onlineResource>
+<cit:CI_OnlineResource>
+<cit:linkage>
+<gco:CharacterString>https://epsg.io/5070</gco:CharacterString>
+</cit:linkage>
+</cit:CI_OnlineResource>
+</cit:onlineResource>
+</cit:CI_Citation>
+</mcc:authority>
+<mcc:code>
+<gco:CharacterString>5070</gco:CharacterString>
+</mcc:code>
+<mcc:codeSpace>
+<gco:CharacterString>EPSG</gco:CharacterString>
+</mcc:codeSpace>
+<mcc:version>
+<gco:CharacterString>7.4.6(10.1.0)</gco:CharacterString>
+</mcc:version>
+</mcc:MD_Identifier>
+</mrs:referenceSystemIdentifier>
+</mrs:MD_ReferenceSystem>
+</mdb:referenceSystemInfo>
+<mdb:identificationInfo>
+<mri:MD_DataIdentification>
+<mri:citation>
+<cit:CI_Citation>
+<cit:title>
+<gco:CharacterString>Survey Area Raster 10m -</gco:CharacterString>
+</cit:title>
+<cit:date>
+<cit:CI_Date>
+<cit:date>
+<gco:DateTime>2000-01-01T00:00:00</gco:DateTime>
+</cit:date>
+<cit:dateType>
+<cit:CI_DateTypeCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#CI_DateTypeCode" codeListValue="creation">creation</cit:CI_DateTypeCode>
+</cit:dateType>
+</cit:CI_Date>
+</cit:date>
+<cit:date>
+<cit:CI_Date>
+<cit:date>
+<gco:DateTime>2000-01-01T00:00:00</gco:DateTime>
+</cit:date>
+<cit:dateType>
+<cit:CI_DateTypeCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#CI_DateTypeCode" codeListValue="publication">publication</cit:CI_DateTypeCode>
+</cit:dateType>
+</cit:CI_Date>
+</cit:date>
+<cit:date>
+<cit:CI_Date>
+<cit:date>
+<gco:DateTime>2000-01-01T00:00:00</gco:DateTime>
+</cit:date>
+<cit:dateType>
+<cit:CI_DateTypeCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#CI_DateTypeCode" codeListValue="revision">revision</cit:CI_DateTypeCode>
+</cit:dateType>
+</cit:CI_Date>
+</cit:date>
+<cit:edition>
+<gco:CharacterString>xxFYxx</gco:CharacterString>
+</cit:edition>
+<cit:editionDate>
+<gco:DateTime>2000-01-01T00:00:00</gco:DateTime>
+</cit:editionDate>
+<cit:citedResponsibleParty>
+<cit:CI_Responsibility>
+<cit:role>
+<cit:CI_RoleCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#CI_RoleCode" codeListValue="originator">originator</cit:CI_RoleCode>
+</cit:role>
+<cit:party>
+<cit:CI_Organisation>
+<cit:name>
+<gco:CharacterString>U.S. Department of Agriculture, Natural Resources Conservation Service, National Soil Survey Center</gco:CharacterString>
+</cit:name>
+</cit:CI_Organisation>
+</cit:party>
+</cit:CI_Responsibility>
+</cit:citedResponsibleParty>
+<cit:presentationForm>
+<cit:CI_PresentationFormCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#CI_PresentationFormCode" codeListValue="mapDigital">mapDigital</cit:CI_PresentationFormCode>
+</cit:presentationForm>
+<cit:series>
+<cit:CI_Series>
+<cit:name>
+<gco:CharacterString>xxFYxx RSS</gco:CharacterString>
+</cit:name>
+<cit:issueIdentification>
+<gco:CharacterString>xxFYxx RSS</gco:CharacterString>
+</cit:issueIdentification>
+</cit:CI_Series>
+</cit:series>
+<cit:onlineResource>
+<cit:CI_OnlineResource>
+<cit:linkage>
+<gco:CharacterString>https://nrcs.app.box.com/folder/234454463154</gco:CharacterString>
+</cit:linkage>
+<cit:function>
+<cit:CI_OnLineFunctionCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#CI_OnLineFunctionCode" codeListValue="download">download</cit:CI_OnLineFunctionCode>
+</cit:function>
+</cit:CI_OnlineResource>
+</cit:onlineResource>
+</cit:CI_Citation>
+</mri:citation>
+<mri:abstract>
+<gco:CharacterString>The Survey Area Raster (SARASTER) represents the boundaries of various NASIS Area Types, specifically those that represent soil survey areas, such as, "Country", "Non-MLRA Soil Survey Area" or "Raster Soil Survey Area". "Country" area types are sourced from the State Goil Geographic Database (STATSGO), "Non-MLRA Soil Survey Area" are sourced from the Soil Survey Geographic Database (SSURGO) and "Raster Soil Survey Area" are sourced from the Raster Soil Survey databases (RSS). Each cell value is represented by the integer version of the legend key (LKEY), associating it with the legend table.Digital soil mapping is the production of georeferenced soil databases based on the quantitative  relationships between measurements made in the field or laboratory and environmental data (McBratney et al. 2003). This digital soil mapping product represents discrete classes (soil map units) delivered as raster data. Both digital and traditional soil  mapping use expert knowledge and a conceptual soil-landscape model as a means for organizing environmental information. McBratney Alex B., Mendonça L. Santos, and Budiman B. Minasny. 2003. “On Digital Soil Mapping.”Geoderma 117, no. 1: 3–52. https://doi.org/10.1016/S0016-7061(03)00223-4. The Raster Soil Survey (RSS) database is a representation of soil survey work completed using digital soil mapping methodologies. Where available, this data represents the most detailed level of soil geographic data developed by the National Cooperative Soil Survey. The associated data represents Raster Soil Survey class data, available in this state. The tabular data represent the soil attributes, and are derived from properties and characteristics stored in the National Soil Information System (NASIS). The spatial data rendered in the geodatabase result from Raster Soil Survey - Project Mapping. Raster Soil Survey is a reference to products of soil survey work completed using digital soil mapping methodologies. The gridded map layer is offered in an ArcGIS file geodatabase raster format. The raster map data have a 10 meter cell size that aligns with the Gridded Soil Survey Geographic (gSSURGO) Database. Raster Soil Survey data represents the most detailed soil survey information for a given area within the Gridded National Soil Geographic Database (gNATSGO) product. Each cell is linked to a map unit identifier called the map unit key. The unique map unit key is used to link to raster cells to mapunit and aggregated attribute tables. Additional information on methods, process and standards for Digital Soil Mapping and Raster Soil Survey can be found in Chapter 5 of the Soil Survey Manual, Part 648 of the National Soil Survey Handbook, and the USDA-NRCS Raster Soil Survey page.</gco:CharacterString>
+</mri:abstract>
+<mri:purpose>
+<gco:CharacterString>The Raster Soil Survey (RSS) statewide dataset was created for use in local, state-wide, national, and regional  resource planning and analysis of soils data. The dataset consists of soils data in raster format from Digital Soil Mapping (DSM) projects along with associated attribute tables. The raster map layer data can be readily combined with other national, regional, and local raster layers, e.g., National Land Cover Database (NLCD), the National Agricultural Statistics Service (NASS) Crop Data Layer, or the National Elevation Dataset (NED).</gco:CharacterString>
+</mri:purpose>
+<mri:credit>
+<gco:CharacterString>Soil Survey Staff. Raster Soil Surveys (RSS). United States Department of Agriculture, Natural Resources Conservation Service. Available online at https://www.nrcs.usda.gov/resources/data-and-reports/raster-soil-surveys-rss and available for download online at  https://nrcs.app.box.com/v/soils December 2025 (2026 official release).</gco:CharacterString>
+</mri:credit>
+<mri:status>
+<mcc:MD_ProgressCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#MD_ProgressCode" codeListValue="completed">completed</mcc:MD_ProgressCode>
+</mri:status>
+<mri:pointOfContact>
+<cit:CI_Responsibility>
+<cit:role>
+<cit:CI_RoleCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#CI_RoleCode" codeListValue="pointOfContact">pointOfContact</cit:CI_RoleCode>
+</cit:role>
+<cit:party>
+<cit:CI_Organisation>
+<cit:name>
+<gco:CharacterString>U.S. Department of Agriculture, Natural Resources Conservation Service, Soil and Plant Science Division</gco:CharacterString>
+</cit:name>
+<cit:contactInfo>
+<cit:CI_Contact>
+<cit:phone>
+<cit:CI_Telephone>
+<cit:number>
+<gco:CharacterString>(402) 437-5378</gco:CharacterString>
+</cit:number>
+<cit:numberType>
+<cit:CI_TelephoneTypeCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#CI_TelephoneTypeCode" codeListValue="voice">voice</cit:CI_TelephoneTypeCode>
+</cit:numberType>
+</cit:CI_Telephone>
+</cit:phone>
+<cit:phone>
+<cit:CI_Telephone>
+<cit:number>
+<gco:CharacterString>(402) 437-5379</gco:CharacterString>
+</cit:number>
+<cit:numberType>
+<cit:CI_TelephoneTypeCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#CI_TelephoneTypeCode" codeListValue="voice">voice</cit:CI_TelephoneTypeCode>
+</cit:numberType>
+</cit:CI_Telephone>
+</cit:phone>
+<cit:address>
+<cit:CI_Address>
+<cit:deliveryPoint>
+<gco:CharacterString>National Soil Survey Center</gco:CharacterString>
+</cit:deliveryPoint>
+<cit:deliveryPoint>
+<gco:CharacterString>1121 Lincoln Mall</gco:CharacterString>
+</cit:deliveryPoint>
+<cit:deliveryPoint>
+<gco:CharacterString>Suite 230</gco:CharacterString>
+</cit:deliveryPoint>
+<cit:city>
+<gco:CharacterString>Lincoln</gco:CharacterString>
+</cit:city>
+<cit:administrativeArea>
+<gco:CharacterString>NE</gco:CharacterString>
+</cit:administrativeArea>
+<cit:postalCode>
+<gco:CharacterString>68508</gco:CharacterString>
+</cit:postalCode>
+<cit:country>
+<lan:CountryCode codeList="http://www.iso.org/iso/country_codes/iso_3166_code_lists.htm" codeListValue="US">US</lan:CountryCode>
+</cit:country>
+<cit:electronicMailAddress>
+<gco:CharacterString>SoilsHotline@usda.gov</gco:CharacterString>
+</cit:electronicMailAddress>
+</cit:CI_Address>
+</cit:address>
+<cit:onlineResource>
+<cit:CI_OnlineResource>
+<cit:linkage>
+<gco:CharacterString>https://www.nrcs.usda.gov/conservation-basics/soil/soil-and-plant-science-division</gco:CharacterString>
+</cit:linkage>
+</cit:CI_OnlineResource>
+</cit:onlineResource>
+</cit:CI_Contact>
+</cit:contactInfo>
+<cit:individual>
+<cit:CI_Individual>
+<cit:name>
+<gco:CharacterString>Soil Survey Staff</gco:CharacterString>
+</cit:name>
+<cit:positionName>
+<gco:CharacterString>Soil Business Systems</gco:CharacterString>
+</cit:positionName>
+</cit:CI_Individual>
+</cit:individual>
+</cit:CI_Organisation>
+</cit:party>
+</cit:CI_Responsibility>
+</mri:pointOfContact>
+<mri:spatialRepresentationType>
+<mcc:MD_SpatialRepresentationTypeCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#MD_SpatialRepresentationTypeCode" codeListValue="grid">grid</mcc:MD_SpatialRepresentationTypeCode>
+</mri:spatialRepresentationType>
+<mri:topicCategory>
+<mri:MD_TopicCategoryCode>environment</mri:MD_TopicCategoryCode>
+</mri:topicCategory>
+<mri:topicCategory>
+<mri:MD_TopicCategoryCode>geoscientificInformation</mri:MD_TopicCategoryCode>
+</mri:topicCategory>
+<mri:topicCategory>
+<mri:MD_TopicCategoryCode>farming</mri:MD_TopicCategoryCode>
+</mri:topicCategory>
+<mri:extent>
+<gex:EX_Extent>
+<gex:geographicElement>
+<gex:EX_GeographicBoundingBox>
+<gex:westBoundLongitude>
+<gco:Decimal>0</gco:Decimal>
+</gex:westBoundLongitude>
+<gex:eastBoundLongitude>
+<gco:Decimal>0</gco:Decimal>
+</gex:eastBoundLongitude>
+<gex:southBoundLatitude>
+<gco:Decimal>0</gco:Decimal>
+</gex:southBoundLatitude>
+<gex:northBoundLatitude>
+<gco:Decimal>0</gco:Decimal>
+</gex:northBoundLatitude>
+</gex:EX_GeographicBoundingBox>
+</gex:geographicElement>
+</gex:EX_Extent>
+</mri:extent>
+<mri:extent>
+<gex:EX_Extent>
+<gex:geographicElement>
+<gex:EX_GeographicBoundingBox>
+<gex:extentTypeCode>
+<gco:Boolean>true</gco:Boolean>
+</gex:extentTypeCode>
+<gex:westBoundLongitude>
+<gco:Decimal>-94.136625</gco:Decimal>
+</gex:westBoundLongitude>
+<gex:eastBoundLongitude>
+<gco:Decimal>-88.488558</gco:Decimal>
+</gex:eastBoundLongitude>
+<gex:southBoundLatitude>
+<gco:Decimal>28.81749</gco:Decimal>
+</gex:southBoundLatitude>
+<gex:northBoundLatitude>
+<gco:Decimal>33.089767</gco:Decimal>
+</gex:northBoundLatitude>
+</gex:EX_GeographicBoundingBox>
+</gex:geographicElement>
+</gex:EX_Extent>
+</mri:extent>
+<mri:resourceMaintenance>
+<mmi:MD_MaintenanceInformation>
+<mmi:maintenanceAndUpdateFrequency>
+<mmi:MD_MaintenanceFrequencyCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#MD_MaintenanceFrequencyCode" codeListValue="annually">annually</mmi:MD_MaintenanceFrequencyCode>
+</mmi:maintenanceAndUpdateFrequency>
+</mmi:MD_MaintenanceInformation>
+</mri:resourceMaintenance>
+<mri:descriptiveKeywords>
+<mri:MD_Keywords>
+<mri:keyword>
+<gco:CharacterString>farming</gco:CharacterString>
+</mri:keyword>
+<mri:keyword>
+<gco:CharacterString>environment</gco:CharacterString>
+</mri:keyword>
+<mri:type>
+<mri:MD_KeywordTypeCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#napMD_KeywordTypeCode" codeListValue="theme">theme</mri:MD_KeywordTypeCode>
+</mri:type>
+<mri:thesaurusName>
+<cit:CI_Citation>
+<cit:title>
+<gco:CharacterString>ISO 19115 Topic Categories</gco:CharacterString>
+</cit:title>
+</cit:CI_Citation>
+</mri:thesaurusName>
+</mri:MD_Keywords>
+</mri:descriptiveKeywords>
+<mri:descriptiveKeywords>
+<mri:MD_Keywords>
+<mri:keyword>
+<gco:CharacterString>Raster Soil Survey</gco:CharacterString>
+</mri:keyword>
+<mri:keyword>
+<gco:CharacterString>DSM</gco:CharacterString>
+</mri:keyword>
+<mri:keyword>
+<gco:CharacterString>raster</gco:CharacterString>
+</mri:keyword>
+<mri:keyword>
+<gco:CharacterString>soils</gco:CharacterString>
+</mri:keyword>
+<mri:keyword>
+<gco:CharacterString>gridded</gco:CharacterString>
+</mri:keyword>
+<mri:keyword>
+<gco:CharacterString>Soil Survey</gco:CharacterString>
+</mri:keyword>
+<mri:keyword>
+<gco:CharacterString>Digital Soil Mapping</gco:CharacterString>
+</mri:keyword>
+<mri:keyword>
+<gco:CharacterString>USDA</gco:CharacterString>
+</mri:keyword>
+<mri:keyword>
+<gco:CharacterString>NRCS</gco:CharacterString>
+</mri:keyword>
+<mri:type>
+<mri:MD_KeywordTypeCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#napMD_KeywordTypeCode" codeListValue="theme">theme</mri:MD_KeywordTypeCode>
+</mri:type>
+</mri:MD_Keywords>
+</mri:descriptiveKeywords>
+<mri:descriptiveKeywords>
+<mri:MD_Keywords>
+<mri:keyword>
+<gco:CharacterString>USA</gco:CharacterString>
+</mri:keyword>
+<mri:keyword>
+<gco:CharacterString>United States of America</gco:CharacterString>
+</mri:keyword>
+<mri:keyword>
+<gco:CharacterString>xxST</gco:CharacterString>
+</mri:keyword>
+<mri:keyword>
+<gco:CharacterString>xxSTATE</gco:CharacterString>
+</mri:keyword>
+<mri:type>
+<mri:MD_KeywordTypeCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#napMD_KeywordTypeCode" codeListValue="place">place</mri:MD_KeywordTypeCode>
+</mri:type>
+<mri:thesaurusName>
+<cit:CI_Citation>
+<cit:title>
+<gco:CharacterString>Counties and County Equivalents of the States of the United States and the District of Columbia (FIPS Pub 6-3)</gco:CharacterString>
+</cit:title>
+</cit:CI_Citation>
+</mri:thesaurusName>
+</mri:MD_Keywords>
+</mri:descriptiveKeywords>
+<mri:descriptiveKeywords>
+<mri:MD_Keywords>
+<mri:keyword>
+<gco:CharacterString>Annual</gco:CharacterString>
+</mri:keyword>
+<mri:keyword>
+<gco:CharacterString>xxFYxx</gco:CharacterString>
+</mri:keyword>
+<mri:type>
+<mri:MD_KeywordTypeCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#napMD_KeywordTypeCode" codeListValue="temporal">temporal</mri:MD_KeywordTypeCode>
+</mri:type>
+</mri:MD_Keywords>
+</mri:descriptiveKeywords>
+<mri:descriptiveKeywords>
+<mri:MD_Keywords>
+<mri:keyword>
+<gco:CharacterString>Downloadable Data</gco:CharacterString>
+</mri:keyword>
+<mri:thesaurusName uuidref="723f6998-058e-11dc-8314-0800200c9a66">
+</mri:thesaurusName>
+</mri:MD_Keywords>
+</mri:descriptiveKeywords>
+<mri:resourceConstraints>
+<mco:MD_Constraints>
+<mco:useLimitation>
+<gco:CharacterString>The U.S. Department of Agriculture, Natural Resources Conservation Service, should be acknowledged as the data source in products derived from these data. This dataset is not designed for use as a primary regulatory tool in permitting or siting decisions, but may be used as a reference source. This is public information and may be interpreted by organizations, agencies, units of government, or others based on needs; however, they are responsible for the appropriate application. Federal, State, or local regulatory bodies are not to reassign to the Natural Resources Conservation Service any authority for the decisions that they make. The Natural Resources Conservation Service will not perform any evaluations of these maps for purposes related solely to State or local regulatory programs. Digital data files are periodically updated. Files are dated, and users are responsible for obtaining the latest version of the data.</gco:CharacterString>
+</mco:useLimitation>
+</mco:MD_Constraints>
+</mri:resourceConstraints>
+<mri:resourceConstraints>
+<mco:MD_LegalConstraints>
+<mco:useLimitation>
+<gco:CharacterString>See access and use constraints information.</gco:CharacterString>
+</mco:useLimitation>
+<mco:otherConstraints>
+<gco:CharacterString>The U.S. Department of Agriculture (USDA) prohibits discrimination against its customers, employees, and applicants for employment on the bases of race, color, national origin, age, disability, sex, gender identity, religion, reprisal, and where applicable, political beliefs, marital status, familial or parental status, sexual orientation, or all or part of an individual's income is derived from any public assistance program, or protected genetic information in employment or in any program or activity conducted or funded by the Department. (Not all prohibited bases will apply to all programs and/or employment activities.) To file a complaint of discrimination, complete, sign and mail the USDA Program Discrimination Complaint Form (PDF), found online at http://www.ascr.usda.gov/complaint_filing_cust.html, or at any USDA office, or call (866) 632-9992 to request the form. Send your completed complaint form or letter to us by mail at: USDA Office of the Assistant Secretary for Civil Rights 1400 Independence Avenue, S.W. Washington, D.C. 20250-9410 Or by email at program.intake@usda.gov. Individuals who are deaf, hard of hearing or have speech disabilities and you wish to file either an EEO or program complaint please contact USDA through the Federal Relay Service at (800) 877-8339 or (800) 845-6136 (in Spanish). Persons with disabilities who wish to file a program complaint, please see information above on how to contact us by mail directly or by email. If you require alternative means of communication for program information (e.g., Braille, large print, audiotape, etc.) please contact USDA's TARGET Center at (202) 720-2600 (voice and TDD).</gco:CharacterString>
+</mco:otherConstraints>
+</mco:MD_LegalConstraints>
+</mri:resourceConstraints>
+<mri:associatedResource>
+<mri:MD_AssociatedResource>
+<mri:name>
+<cit:CI_Citation>
+<cit:title>
+<gco:CharacterString>Soil Taxonomy: A Basic System of Soil Classification for Making and Interpreting Soil Surveys</gco:CharacterString>
+</cit:title>
+<cit:alternateTitle>
+<gco:CharacterString>Soil Taxonomy</gco:CharacterString>
+</cit:alternateTitle>
+<cit:date>
+<cit:CI_Date>
+<cit:date>
+<gco:DateTime>1975-01-01T00:00:00</gco:DateTime>
+</cit:date>
+<cit:dateType>
+<cit:CI_DateTypeCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#CI_DateTypeCode" codeListValue="publication">publication</cit:CI_DateTypeCode>
+</cit:dateType>
+</cit:CI_Date>
+</cit:date>
+<cit:edition>
+<gco:CharacterString>Second</gco:CharacterString>
+</cit:edition>
+<cit:editionDate>
+<gco:DateTime>1999-01-01T00:00:00</gco:DateTime>
+</cit:editionDate>
+<cit:presentationForm>
+<cit:CI_PresentationFormCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#CI_PresentationFormCode" codeListValue="documentDigital">documentDigital</cit:CI_PresentationFormCode>
+</cit:presentationForm>
+<cit:presentationForm>
+<cit:CI_PresentationFormCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#CI_PresentationFormCode" codeListValue="documentHardcopy">documentHardcopy</cit:CI_PresentationFormCode>
+</cit:presentationForm>
+<cit:series>
+<cit:CI_Series>
+<cit:name>
+<gco:CharacterString>USDA Agriculture Handbook</gco:CharacterString>
+</cit:name>
+<cit:issueIdentification>
+<gco:CharacterString>Number 436</gco:CharacterString>
+</cit:issueIdentification>
+</cit:CI_Series>
+</cit:series>
+<cit:otherCitationDetails>
+<gco:CharacterString>Soil Survey Staff. 1999. Soil taxonomy: A basic system of soil classification for making and interpreting soil surveys. 2nd edition. Natural Resources Conservation Service. U.S. Department of Agriculture Handbook 436</gco:CharacterString>
+</cit:otherCitationDetails>
+<cit:ISBN>
+<gco:CharacterString>978-0894642869</gco:CharacterString>
+</cit:ISBN>
+<cit:onlineResource>
+<cit:CI_OnlineResource>
+<cit:linkage>
+<gco:CharacterString>https://www.nrcs.usda.gov/sites/default/files/2022-06/Soil%20Taxonomy.pdf</gco:CharacterString>
+</cit:linkage>
+<cit:protocol>
+<gco:CharacterString>https</gco:CharacterString>
+</cit:protocol>
+<cit:function>
+<cit:CI_OnLineFunctionCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#CI_OnLineFunctionCode" codeListValue="information">information</cit:CI_OnLineFunctionCode>
+</cit:function>
+</cit:CI_OnlineResource>
+</cit:onlineResource>
+</cit:CI_Citation>
+</mri:name>
+<mri:associationType>
+<mri:DS_AssociationTypeCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#DS_AssociationTypeCode" codeListValue="crossReference">crossReference</mri:DS_AssociationTypeCode>
+</mri:associationType>
+</mri:MD_AssociatedResource>
+</mri:associatedResource>
+<mri:associatedResource>
+<mri:MD_AssociatedResource>
+<mri:name>
+<cit:CI_Citation>
+<cit:title>
+<gco:CharacterString>Keys to Soil Taxonomy</gco:CharacterString>
+</cit:title>
+<cit:date>
+<cit:CI_Date>
+<cit:date>
+<gco:DateTime>1975-01-01T00:00:00</gco:DateTime>
+</cit:date>
+<cit:dateType>
+<cit:CI_DateTypeCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#CI_DateTypeCode" codeListValue="publication">publication</cit:CI_DateTypeCode>
+</cit:dateType>
+</cit:CI_Date>
+</cit:date>
+<cit:edition>
+<gco:CharacterString>13th</gco:CharacterString>
+</cit:edition>
+<cit:editionDate>
+<gco:DateTime>2022-01-01T00:00:00</gco:DateTime>
+</cit:editionDate>
+<cit:presentationForm>
+<cit:CI_PresentationFormCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#CI_PresentationFormCode" codeListValue="documentDigital">documentDigital</cit:CI_PresentationFormCode>
+</cit:presentationForm>
+<cit:presentationForm>
+<cit:CI_PresentationFormCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#CI_PresentationFormCode" codeListValue="documentHardcopy">documentHardcopy</cit:CI_PresentationFormCode>
+</cit:presentationForm>
+<cit:otherCitationDetails>
+<gco:CharacterString>Soil Survey Staff. 2022. Keys to Soil Taxonomy, 13th ed. USDA-Natural Resources Conservation Service</gco:CharacterString>
+</cit:otherCitationDetails>
+<cit:ISBN>
+<gco:CharacterString>978-1998295005</gco:CharacterString>
+</cit:ISBN>
+<cit:onlineResource>
+<cit:CI_OnlineResource>
+<cit:linkage>
+<gco:CharacterString>https://www.nrcs.usda.gov/sites/default/files/2022-09/Keys-to-Soil-Taxonomy.pdf</gco:CharacterString>
+</cit:linkage>
+<cit:protocol>
+<gco:CharacterString>https</gco:CharacterString>
+</cit:protocol>
+<cit:function>
+<cit:CI_OnLineFunctionCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#CI_OnLineFunctionCode" codeListValue="information">information</cit:CI_OnLineFunctionCode>
+</cit:function>
+</cit:CI_OnlineResource>
+</cit:onlineResource>
+</cit:CI_Citation>
+</mri:name>
+<mri:associationType>
+<mri:DS_AssociationTypeCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#DS_AssociationTypeCode" codeListValue="crossReference">crossReference</mri:DS_AssociationTypeCode>
+</mri:associationType>
+</mri:MD_AssociatedResource>
+</mri:associatedResource>
+<mri:associatedResource>
+<mri:MD_AssociatedResource>
+<mri:name>
+<cit:CI_Citation>
+<cit:title>
+<gco:CharacterString>National Soil Survey Handbook, Title 430-VI</gco:CharacterString>
+</cit:title>
+<cit:alternateTitle>
+<gco:CharacterString>National Soil Survey Handbook</gco:CharacterString>
+</cit:alternateTitle>
+<cit:date>
+<cit:CI_Date>
+<cit:date>
+<gco:DateTime>1993-11-01T00:00:00</gco:DateTime>
+</cit:date>
+<cit:dateType>
+<cit:CI_DateTypeCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#CI_DateTypeCode" codeListValue="publication">publication</cit:CI_DateTypeCode>
+</cit:dateType>
+</cit:CI_Date>
+</cit:date>
+<cit:date>
+<cit:CI_Date>
+<cit:date>
+<gco:DateTime>2024-08-01T00:00:00</gco:DateTime>
+</cit:date>
+<cit:dateType>
+<cit:CI_DateTypeCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#CI_DateTypeCode" codeListValue="revision">revision</cit:CI_DateTypeCode>
+</cit:dateType>
+</cit:CI_Date>
+</cit:date>
+<cit:presentationForm>
+<cit:CI_PresentationFormCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#CI_PresentationFormCode" codeListValue="documentDigital">documentDigital</cit:CI_PresentationFormCode>
+</cit:presentationForm>
+<cit:otherCitationDetails>
+<gco:CharacterString>U.S. Department of Agriculture, Natural Resources Conservation Service. National soil survey handbook, title 430-VI. https://directives.sc.egov.usda.gov (accessed 02July 2026)</gco:CharacterString>
+</cit:otherCitationDetails>
+<cit:ISBN>
+<gco:CharacterString>979-8851751431</gco:CharacterString>
+</cit:ISBN>
+<cit:onlineResource>
+<cit:CI_OnlineResource>
+<cit:linkage>
+<gco:CharacterString>https://directives.nrcs.usda.gov//sites/default/files2/1725389663/National%20Soil%20Survey%20Handbook%20%28entire%20handbook%29.pdf</gco:CharacterString>
+</cit:linkage>
+<cit:protocol>
+<gco:CharacterString>https</gco:CharacterString>
+</cit:protocol>
+<cit:function>
+<cit:CI_OnLineFunctionCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#CI_OnLineFunctionCode" codeListValue="information">information</cit:CI_OnLineFunctionCode>
+</cit:function>
+</cit:CI_OnlineResource>
+</cit:onlineResource>
+</cit:CI_Citation>
+</mri:name>
+<mri:associationType>
+<mri:DS_AssociationTypeCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#DS_AssociationTypeCode" codeListValue="crossReference">crossReference</mri:DS_AssociationTypeCode>
+</mri:associationType>
+</mri:MD_AssociatedResource>
+</mri:associatedResource>
+<mri:associatedResource>
+<mri:MD_AssociatedResource>
+<mri:name>
+<cit:CI_Citation>
+<cit:title>
+<gco:CharacterString>The Soil Survey Manual</gco:CharacterString>
+</cit:title>
+<cit:date>
+<cit:CI_Date>
+<cit:date>
+<gco:DateTime>1962-10-01T00:00:00</gco:DateTime>
+</cit:date>
+<cit:dateType>
+<cit:CI_DateTypeCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#CI_DateTypeCode" codeListValue="publication">publication</cit:CI_DateTypeCode>
+</cit:dateType>
+</cit:CI_Date>
+</cit:date>
+<cit:date>
+<cit:CI_Date>
+<cit:date>
+<gco:DateTime>2017-03-01T00:00:00</gco:DateTime>
+</cit:date>
+<cit:dateType>
+<cit:CI_DateTypeCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#CI_DateTypeCode" codeListValue="revision">revision</cit:CI_DateTypeCode>
+</cit:dateType>
+</cit:CI_Date>
+</cit:date>
+<cit:presentationForm>
+<cit:CI_PresentationFormCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#CI_PresentationFormCode" codeListValue="documentDigital">documentDigital</cit:CI_PresentationFormCode>
+</cit:presentationForm>
+<cit:presentationForm>
+<cit:CI_PresentationFormCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#CI_PresentationFormCode" codeListValue="documentHardcopy">documentHardcopy</cit:CI_PresentationFormCode>
+</cit:presentationForm>
+<cit:series>
+<cit:CI_Series>
+<cit:name>
+<gco:CharacterString>Agriculture Handbook</gco:CharacterString>
+</cit:name>
+<cit:issueIdentification>
+<gco:CharacterString>Number 18</gco:CharacterString>
+</cit:issueIdentification>
+</cit:CI_Series>
+</cit:series>
+<cit:otherCitationDetails>
+<gco:CharacterString>Soil Science Division Staff. 2017. Soil survey manual. C. Ditzler, K. Scheffe, and H.C. Monger (eds.). USDA Handbook 18. Government Printing Office, Washington, D.C.</gco:CharacterString>
+</cit:otherCitationDetails>
+<cit:ISBN>
+<gco:CharacterString>979-8851757709</gco:CharacterString>
+</cit:ISBN>
+<cit:onlineResource>
+<cit:CI_OnlineResource>
+<cit:linkage>
+<gco:CharacterString>https://www.nrcs.usda.gov/sites/default/files/2022-09/The-Soil-Survey-Manual.pdf</gco:CharacterString>
+</cit:linkage>
+<cit:protocol>
+<gco:CharacterString>https</gco:CharacterString>
+</cit:protocol>
+<cit:function>
+<cit:CI_OnLineFunctionCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#CI_OnLineFunctionCode" codeListValue="information">information</cit:CI_OnLineFunctionCode>
+</cit:function>
+</cit:CI_OnlineResource>
+</cit:onlineResource>
+</cit:CI_Citation>
+</mri:name>
+<mri:associationType>
+<mri:DS_AssociationTypeCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#DS_AssociationTypeCode" codeListValue="crossReference">crossReference</mri:DS_AssociationTypeCode>
+</mri:associationType>
+</mri:MD_AssociatedResource>
+</mri:associatedResource>
+<mri:associatedResource>
+<mri:MD_AssociatedResource>
+<mri:name>
+<cit:CI_Citation>
+<cit:title>
+<gco:CharacterString>Field Book for Describing and Sampling Soils</gco:CharacterString>
+</cit:title>
+<cit:date>
+<cit:CI_Date>
+<cit:date>
+<gco:DateTime>1998-01-01T00:00:00</gco:DateTime>
+</cit:date>
+<cit:dateType>
+<cit:CI_DateTypeCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#CI_DateTypeCode" codeListValue="publication">publication</cit:CI_DateTypeCode>
+</cit:dateType>
+</cit:CI_Date>
+</cit:date>
+<cit:edition>
+<gco:CharacterString>Version 4.0</gco:CharacterString>
+</cit:edition>
+<cit:editionDate>
+<gco:DateTime>2024-11-01T00:00:00</gco:DateTime>
+</cit:editionDate>
+<cit:presentationForm>
+<cit:CI_PresentationFormCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#CI_PresentationFormCode" codeListValue="documentDigital">documentDigital</cit:CI_PresentationFormCode>
+</cit:presentationForm>
+<cit:presentationForm>
+<cit:CI_PresentationFormCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#CI_PresentationFormCode" codeListValue="documentHardcopy">documentHardcopy</cit:CI_PresentationFormCode>
+</cit:presentationForm>
+<cit:otherCitationDetails>
+<gco:CharacterString>Soil Survey Staff. (2024). Field book for describing and sampling soils, version 4.0. USDA Natural Resources Conservation Service. U.S. Government Printing Office</gco:CharacterString>
+</cit:otherCitationDetails>
+<cit:ISBN>
+<gco:CharacterString>979-8268184990</gco:CharacterString>
+</cit:ISBN>
+<cit:onlineResource>
+<cit:CI_OnlineResource>
+<cit:linkage>
+<gco:CharacterString>https://www.nrcs.usda.gov/sites/default/files/2025-01/Field-Book-for-Describing-and-Sampling-Soils-v4.pdf</gco:CharacterString>
+</cit:linkage>
+<cit:protocol>
+<gco:CharacterString>https</gco:CharacterString>
+</cit:protocol>
+<cit:function>
+<cit:CI_OnLineFunctionCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#CI_OnLineFunctionCode" codeListValue="information">information</cit:CI_OnLineFunctionCode>
+</cit:function>
+</cit:CI_OnlineResource>
+</cit:onlineResource>
+</cit:CI_Citation>
+</mri:name>
+<mri:associationType>
+<mri:DS_AssociationTypeCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#DS_AssociationTypeCode" codeListValue="crossReference">crossReference</mri:DS_AssociationTypeCode>
+</mri:associationType>
+</mri:MD_AssociatedResource>
+</mri:associatedResource>
+<mri:defaultLocale>
+<lan:PT_Locale>
+<lan:language>
+<lan:LanguageCode codeList="http://www.loc.gov/standards/iso639-2/php/code_list.php" codeListValue="eng">eng</lan:LanguageCode>
+</lan:language>
+<lan:country>
+<lan:CountryCode codeList="http://www.iso.org/iso/country_codes/iso_3166_code_lists.htm" codeListValue="US">US</lan:CountryCode>
+</lan:country>
+<lan:characterEncoding>
+<lan:MD_CharacterSetCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#MD_CharacterSetCode" codeListValue="utf8">utf8</lan:MD_CharacterSetCode>
+</lan:characterEncoding>
+</lan:PT_Locale>
+</mri:defaultLocale>
+<mri:environmentDescription>
+<gco:CharacterString>Esri ArcGIS Pro 3.5.2; Python 3.11.11</gco:CharacterString>
+</mri:environmentDescription>
+</mri:MD_DataIdentification>
+</mdb:identificationInfo>
+<mdb:contentInfo>
+<mrc:MD_ImageDescription>
+<mrc:attributeDescription>
+<gco:RecordType>Each cell value is represented by the integer version of the legend area lookup key (LAOKEY), associating it with the Raster Soil Survey Project type areas in the laoverlap table.</gco:RecordType>
+</mrc:attributeDescription>
+<mrc:attributeGroup>
+<mrc:MD_AttributeGroup>
+<mrc:contentType>
+<mrc:MD_CoverageContentTypeCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#MD_CoverageContentTypeCode" codeListValue="thematicClassification">thematicClassification</mrc:MD_CoverageContentTypeCode>
+</mrc:contentType>
+<mrc:attribute>
+<mrc:MD_Band>
+<mrc:sequenceIdentifier>
+<gco:MemberName>
+<gco:aName>
+<gco:CharacterString>LKEY</gco:CharacterString>
+</gco:aName>
+<gco:attributeType>
+<gco:TypeName>
+<gco:aName>
+<gco:CharacterString>PositiveInteger</gco:CharacterString>
+</gco:aName>
+</gco:TypeName>
+</gco:attributeType>
+</gco:MemberName>
+</mrc:sequenceIdentifier>
+<mrc:description>
+<gco:CharacterString>Band_1</gco:CharacterString>
+</mrc:description>
+<mrc:maxValue>
+<gco:Real>130476</gco:Real>
+</mrc:maxValue>
+<mrc:units>
+<gml:UnitDefinition>
+<gml:identifier codeSpace="GML_UomSymbol">Unified Code of Units of Measure</gml:identifier>
+</gml:UnitDefinition>
+</mrc:units>
+<mrc:bitsPerValue>
+<gco:Integer>32</gco:Integer>
+</mrc:bitsPerValue>
+</mrc:MD_Band>
+</mrc:attribute>
+</mrc:MD_AttributeGroup>
+</mrc:attributeGroup>
+</mrc:MD_ImageDescription>
+</mdb:contentInfo>
+<mdb:distributionInfo>
+<mrd:MD_Distribution>
+<mrd:distributionFormat>
+<mrd:MD_Format>
+<mrd:formatSpecificationCitation>
+<cit:CI_Citation>
+<cit:title>
+<gco:CharacterString>Raster Dataset</gco:CharacterString>
+</cit:title>
+<cit:edition>
+<gco:CharacterString>xxVxx</gco:CharacterString>
+</cit:edition>
+</cit:CI_Citation>
+</mrd:formatSpecificationCitation>
+</mrd:MD_Format>
+</mrd:distributionFormat>
+<mrd:distributor>
+<mrd:MD_Distributor>
+<mrd:distributorContact>
+<cit:CI_Responsibility>
+<cit:role>
+<cit:CI_RoleCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#CI_RoleCode" codeListValue="distributor">distributor</cit:CI_RoleCode>
+</cit:role>
+<cit:party>
+<cit:CI_Organisation>
+<cit:name>
+<gco:CharacterString>U.S. Department of Agriculture, Natural Resources Conservation Service, Soil and Plant Science Division</gco:CharacterString>
+</cit:name>
+<cit:contactInfo>
+<cit:CI_Contact>
+<cit:phone>
+<cit:CI_Telephone>
+<cit:number>
+<gco:CharacterString>(402) 437-5378</gco:CharacterString>
+</cit:number>
+<cit:numberType>
+<cit:CI_TelephoneTypeCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#CI_TelephoneTypeCode" codeListValue="voice">voice</cit:CI_TelephoneTypeCode>
+</cit:numberType>
+</cit:CI_Telephone>
+</cit:phone>
+<cit:phone>
+<cit:CI_Telephone>
+<cit:number>
+<gco:CharacterString>(402) 437-5379</gco:CharacterString>
+</cit:number>
+<cit:numberType>
+<cit:CI_TelephoneTypeCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#CI_TelephoneTypeCode" codeListValue="voice">voice</cit:CI_TelephoneTypeCode>
+</cit:numberType>
+</cit:CI_Telephone>
+</cit:phone>
+<cit:address>
+<cit:CI_Address>
+<cit:deliveryPoint>
+<gco:CharacterString>National Soil Survey Center</gco:CharacterString>
+</cit:deliveryPoint>
+<cit:deliveryPoint>
+<gco:CharacterString>1121 Lincoln Mall</gco:CharacterString>
+</cit:deliveryPoint>
+<cit:deliveryPoint>
+<gco:CharacterString>Suite 230</gco:CharacterString>
+</cit:deliveryPoint>
+<cit:city>
+<gco:CharacterString>Lincoln</gco:CharacterString>
+</cit:city>
+<cit:administrativeArea>
+<gco:CharacterString>NE</gco:CharacterString>
+</cit:administrativeArea>
+<cit:postalCode>
+<gco:CharacterString>68508</gco:CharacterString>
+</cit:postalCode>
+<cit:country>
+<lan:CountryCode codeList="http://www.iso.org/iso/country_codes/iso_3166_code_lists.htm" codeListValue="US">US</lan:CountryCode>
+</cit:country>
+<cit:electronicMailAddress>
+<gco:CharacterString>SoilsHotline@usda.gov</gco:CharacterString>
+</cit:electronicMailAddress>
+</cit:CI_Address>
+</cit:address>
+<cit:onlineResource>
+<cit:CI_OnlineResource>
+<cit:linkage>
+<gco:CharacterString>https://www.nrcs.usda.gov/conservation-basics/soil/soil-and-plant-science-division</gco:CharacterString>
+</cit:linkage>
+<cit:function>
+<cit:CI_OnLineFunctionCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#CI_OnLineFunctionCode" codeListValue="information">information</cit:CI_OnLineFunctionCode>
+</cit:function>
+</cit:CI_OnlineResource>
+</cit:onlineResource>
+</cit:CI_Contact>
+</cit:contactInfo>
+<cit:individual>
+<cit:CI_Individual>
+<cit:name>
+<gco:CharacterString>Soil Survey Staff</gco:CharacterString>
+</cit:name>
+<cit:positionName>
+<gco:CharacterString>GIS Specialist</gco:CharacterString>
+</cit:positionName>
+</cit:CI_Individual>
+</cit:individual>
+</cit:CI_Organisation>
+</cit:party>
+</cit:CI_Responsibility>
+</mrd:distributorContact>
+</mrd:MD_Distributor>
+</mrd:distributor>
+<mrd:transferOptions>
+<mrd:MD_DigitalTransferOptions>
+<mrd:unitsOfDistribution>
+<gco:CharacterString>by US states</gco:CharacterString>
+</mrd:unitsOfDistribution>
+<mrd:onLine>
+<cit:CI_OnlineResource>
+<cit:linkage>
+<gco:CharacterString>https://nrcs.app.box.com/folder/234454463154</gco:CharacterString>
+</cit:linkage>
+<cit:function>
+<cit:CI_OnLineFunctionCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#CI_OnLineFunctionCode" codeListValue="download">download</cit:CI_OnLineFunctionCode>
+</cit:function>
+</cit:CI_OnlineResource>
+</mrd:onLine>
+</mrd:MD_DigitalTransferOptions>
+</mrd:transferOptions>
+</mrd:MD_Distribution>
+</mdb:distributionInfo>
+<mdb:resourceLineage>
+<mrl:LI_Lineage>
+<mrl:statement>
+<gco:CharacterString>State Raster Soil Surveys are being successively mapped and updated. Mapping updates are applied annually.</gco:CharacterString>
+</mrl:statement>
+<mrl:scope>
+<mcc:MD_Scope>
+<mcc:level>
+<mcc:MD_ScopeCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#MD_ScopeCode" codeListValue="dataset">dataset</mcc:MD_ScopeCode>
+</mcc:level>
+</mcc:MD_Scope>
+</mrl:scope>
+<mrl:processStep>
+<mrl:LI_ProcessStep>
+<mrl:description>
+<gco:CharacterString>Raster Soil Survey datasets are a composite of individual Raster Soil Survey Projects. Each project was prepared using digital soil mapping methodologies, incorporating remotely sensed data and field collected samples. This dataset consists of georeferenced digital map data and computerized attribute data. The soil classes are linked to attributes in the National Soil Information System (NASIS) relational database, which gives the proportionate extent of the component soils and their properties.</gco:CharacterString>
+</mrl:description>
+<mrl:processor>
+<cit:CI_Responsibility>
+<cit:role>
+<cit:CI_RoleCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#CI_RoleCode" codeListValue="processor">processor</cit:CI_RoleCode>
+</cit:role>
+<cit:party>
+<cit:CI_Organisation>
+<cit:name>
+<gco:CharacterString>U.S. Department of Agriculture, Natural Resources Conservation Service, Soil and Plant Science Division</gco:CharacterString>
+</cit:name>
+<cit:individual>
+<cit:CI_Individual>
+<cit:name>
+<gco:CharacterString>Soil Survey Staff</gco:CharacterString>
+</cit:name>
+<cit:positionName>
+<gco:CharacterString>MLRA</gco:CharacterString>
+</cit:positionName>
+</cit:CI_Individual>
+</cit:individual>
+</cit:CI_Organisation>
+</cit:party>
+</cit:CI_Responsibility>
+</mrl:processor>
+<mrl:source>
+<mrl:LI_Source>
+<mrl:sourceCitation>
+<cit:CI_Citation>
+<cit:title>
+<gco:CharacterString>Raster Soil Survey (RSS)</gco:CharacterString>
+</cit:title>
+<cit:alternateTitle>
+<gco:CharacterString>RSS</gco:CharacterString>
+</cit:alternateTitle>
+<cit:onlineResource>
+<cit:CI_OnlineResource>
+<cit:linkage>
+<gco:CharacterString>https://www.nrcs.usda.gov/resources/data-and-reports/raster-soil-surveys-rss</gco:CharacterString>
+</cit:linkage>
+<cit:function>
+<cit:CI_OnLineFunctionCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#CI_OnLineFunctionCode" codeListValue="information">information</cit:CI_OnLineFunctionCode>
+</cit:function>
+</cit:CI_OnlineResource>
+</cit:onlineResource>
+</cit:CI_Citation>
+</mrl:sourceCitation>
+</mrl:LI_Source>
+</mrl:source>
+</mrl:LI_ProcessStep>
+</mrl:processStep>
+<mrl:processStep>
+<mrl:LI_ProcessStep>
+<mrl:description>
+<gco:CharacterString>The state RSS datasets are compiled and updated using an ArcGIS Pro Python toolbox, Build Raster Soil Survey (RSS) Database.pyt. The Dataset rebuilds the File Geodatabase using current export of tabular data from NASIS, it mosaics in any new mapping from the the MURASTER, PARASTER or adjustments to the SARASTER, and it validates several standards.</gco:CharacterString>
+</mrl:description>
+<mrl:stepDateTime>
+<gml:TimeInstant>
+<gml:timePosition>2000-01-01T00:00:00</gml:timePosition>
+</gml:TimeInstant>
+</mrl:stepDateTime>
+<mrl:processor>
+<cit:CI_Responsibility>
+<cit:role>
+<cit:CI_RoleCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#CI_RoleCode" codeListValue="processor">processor</cit:CI_RoleCode>
+</cit:role>
+<cit:party>
+<cit:CI_Organisation>
+<cit:name>
+<gco:CharacterString>U.S. Department of Agriculture, Natural Resources Conservation Service, Soil and Plant Science Division</gco:CharacterString>
+</cit:name>
+<cit:individual>
+<cit:CI_Individual>
+<cit:name>
+<gco:CharacterString>Soil Survey Staff</gco:CharacterString>
+</cit:name>
+<cit:positionName>
+<gco:CharacterString>Regional GIS Specialist</gco:CharacterString>
+</cit:positionName>
+</cit:CI_Individual>
+</cit:individual>
+</cit:CI_Organisation>
+</cit:party>
+</cit:CI_Responsibility>
+</mrl:processor>
+<mrl:source>
+<mrl:LI_Source>
+<mrl:sourceCitation>
+<cit:CI_Citation>
+<cit:title>
+<gco:CharacterString>Build Raster Soil Survey (RSS) Database.pyt</gco:CharacterString>
+</cit:title>
+<cit:alternateTitle>
+<gco:CharacterString>RSS-Export</gco:CharacterString>
+</cit:alternateTitle>
+<cit:edition>
+<gco:CharacterString>xxVxx</gco:CharacterString>
+</cit:edition>
+<cit:onlineResource>
+<cit:CI_OnlineResource>
+<cit:linkage>
+<gco:CharacterString>https://github.com/StumWhere/RSS-Export</gco:CharacterString>
+</cit:linkage>
+<cit:function>
+<cit:CI_OnLineFunctionCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#CI_OnLineFunctionCode" codeListValue="download">download</cit:CI_OnLineFunctionCode>
+</cit:function>
+</cit:CI_OnlineResource>
+</cit:onlineResource>
+</cit:CI_Citation>
+</mrl:sourceCitation>
+</mrl:LI_Source>
+</mrl:source>
+</mrl:LI_ProcessStep>
+</mrl:processStep>
+</mrl:LI_Lineage>
+</mdb:resourceLineage>
+<mdb:metadataMaintenance>
+<mmi:MD_MaintenanceInformation>
+<mmi:maintenanceAndUpdateFrequency>
+<mmi:MD_MaintenanceFrequencyCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#MD_MaintenanceFrequencyCode" codeListValue="annually">annually</mmi:MD_MaintenanceFrequencyCode>
+</mmi:maintenanceAndUpdateFrequency>
+<mmi:maintenanceDate>
+<cit:CI_Date>
+<cit:date>
+<gco:DateTime>2026-11-16T00:00:00</gco:DateTime>
+</cit:date>
+<cit:dateType>
+<cit:CI_DateTypeCode codeList="standards.iso.org/19115/-3/lan/1.0/codelists.xml#CI_DateTypeCode" codeListValue="revision">revision</cit:CI_DateTypeCode>
+</cit:dateType>
+</cit:CI_Date>
+</mmi:maintenanceDate>
+</mmi:MD_MaintenanceInformation>
+</mdb:metadataMaintenance>
+</mdb:MD_Metadata>
