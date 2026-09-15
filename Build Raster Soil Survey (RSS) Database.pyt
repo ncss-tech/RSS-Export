@@ -13,11 +13,13 @@ Created on: 09/19/2024
     @organization: National Soil Survey Center, USDA-NRCS
     @email: alexander.stum@usda.gov
 
-@modified 8/17/2025
+@modified 9/15/2026
     @by: Alexnder Stum
-@version: 2.0
+@version: 2.1
 
-# ---
+# --- version 2.1, 9/15/26
+- Removed unecessary warning messages about raster attribute table schemas
+# --- version 2.0, 8/17/26
 - Modified to accomodate the inlcusion of PARASTER and SARASTER
 - User now specifies whether it is the first year of publication
 - If not 1st year, parameter for previous year's database so that metadata is
@@ -190,43 +192,43 @@ class buildFGDB(object):
         for i in range(9):
             params[i].clearMessage()
 
-        # MURASTER must have an mukey field
-        if params[6].value:
-            rasts = params[6].valueAsText.split(';')
-            for rast in rasts:
-                if rast[-4:] != '.tif':
-                    params[6].setErrorMessage(f'{rast_d.name} is not a GeoTIFF')
-                rast_d = arcpy.Describe(rast)
-                rast_f = {
-                    f.name for f in rast_d.fields if f.name.lower() == "mukey"
-                }
-                if not rast_f:
-                    params[6].setWarningMessage(
-                        f"{rast_d.name} does not have an mukey field"
-                    )
-        # PARASTER must have required fields
-        if params[7].value:
-            req_flds = {'UPROJID', 'SPATIALVER', 'AREATYPE'}
-            rasts = params[7].valueAsText.split(';')
-            for rast in rasts:
-                if rast[-4:] != '.tif':
-                    params[7].setErrorMessage(f'{rast_d.name} is not a GeoTIFF')
-                rast_d = arcpy.Describe(rast)
-                rast_f = {f.name for f in rast_d.fields if f.name in req_flds}
-                if rast_f != req_flds:
-                    params[7].setWarningMessage(
-                        f"{rast_d.name} does not have "
-                        f"{req_flds - rast_f} fields"
-                    )
-        # SARASTER must have required fields
-        if params[8].value:
-            req_flds = {'AREASYMBOL', 'SPATIALVER', 'AREATYPE'}
-            rast_d = arcpy.Describe(params[8].value)
-            rast_f = {f.name for f in rast_d.fields if f.name in req_flds}
-            if rast_f != req_flds:
-                params[8].setWarningMessage(
-                    f"{rast_d.name} does not have {req_flds - rast_f} fields"
-                )
+        # # MURASTER must have an mukey field
+        # if params[6].value:
+        #     rasts = params[6].valueAsText.split(';')
+        #     for rast in rasts:
+        #         if rast[-4:] != '.tif':
+        #             params[6].setErrorMessage(f'{rast_d.name} is not a GeoTIFF')
+        #         rast_d = arcpy.Describe(rast)
+        #         rast_f = {
+        #             f.name for f in rast_d.fields if f.name.lower() == "mukey"
+        #         }
+        #         if not rast_f:
+        #             params[6].setWarningMessage(
+        #                 f"{rast_d.name} does not have an mukey field"
+        #             )
+        # # PARASTER must have required fields
+        # if params[7].value:
+        #     req_flds = {'UPROJID', 'SPATIALVER', 'AREATYPE'}
+        #     rasts = params[7].valueAsText.split(';')
+        #     for rast in rasts:
+        #         if rast[-4:] != '.tif':
+        #             params[7].setErrorMessage(f'{rast_d.name} is not a GeoTIFF')
+        #         rast_d = arcpy.Describe(rast)
+        #         rast_f = {f.name for f in rast_d.fields if f.name in req_flds}
+        #         if rast_f != req_flds:
+        #             params[7].setWarningMessage(
+        #                 f"{rast_d.name} does not have "
+        #                 f"{req_flds - rast_f} fields"
+        #             )
+        # # SARASTER must have required fields
+        # if params[8].value:
+        #     req_flds = {'AREASYMBOL', 'SPATIALVER', 'AREATYPE'}
+        #     rast_d = arcpy.Describe(params[8].value)
+        #     rast_f = {f.name for f in rast_d.fields if f.name in req_flds}
+        #     if rast_f != req_flds:
+        #         params[8].setWarningMessage(
+        #             f"{rast_d.name} does not have {req_flds - rast_f} fields"
+        #         )
 
         # Year must be + or - 1 year from current year
         cy = datetime.now().year
